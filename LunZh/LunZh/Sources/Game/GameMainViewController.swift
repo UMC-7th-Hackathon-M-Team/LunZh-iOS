@@ -6,64 +6,69 @@
 //
 
 import UIKit
-import SnapKit
-import Then
 
 class GameMainViewController: UIViewController {
     
     // MARK: - Properties
-    
-    // 게임 시작 버튼
-    private let startButton = UIButton().then {
-        $0.setTitle("게임 시작", for: .normal)
-        $0.backgroundColor = .systemBlue
-        $0.layer.cornerRadius = 10
-        $0.titleLabel?.font = UIFont.ptdBoldFont(ofSize: 20)
+    private let mainView = GameMainView()
+    private let navBarManager = NavigationBarManager()
+    private var kindOfGame: Int = 1 {
+        didSet {
+            updateTextForKindOfGame()
+        }
     }
-    
-    // 게임 아이콘
-    private let iconImageView = UIImageView().then {
-        $0.image = UIImage(systemName: "bolt.fill")
-        $0.tintColor = .systemBlue
-        $0.contentMode = .scaleAspectFit
-    }
-    
+
     // MARK: - Lifecycle
+    override func loadView() {
+        self.view = mainView
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
+        setupNavigationBar()
+        setupActions()
+        updateTextForKindOfGame() // 초기 텍스트 설정
     }
     
     // MARK: - Setup
-    private func setupUI() {
-        view.backgroundColor = .systemBackground
-        
-        view.addSubview(iconImageView)
-        view.addSubview(startButton)
-        
-        // 게임 아이콘
-        iconImageView.snp.makeConstraints {
-            $0.center.equalToSuperview()
-            $0.width.height.equalTo(100)
+    private func setupNavigationBar() {
+        navBarManager.setLogoTitle(to: navigationItem, logo: true)
+        navBarManager.addBackButton(to: navigationItem, target: self, action: #selector(backButtonTapped))
+    }
+
+    private func setupActions() {
+        mainView.startButton.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
+    }
+    
+    // MARK: - Methods
+    private func updateTextForKindOfGame() {
+        switch kindOfGame {
+        case 1:
+            mainView.titleLabel.text = "당신의 운을\n보여 주세요"
+            mainView.descriptionLabel.text = "게임시작 버튼을 누르면\n랜덤으로 추첨됩니다!"
+        case 2:
+            mainView.titleLabel.text = "최고의 순발력을\n보여 주세요"
+            mainView.descriptionLabel.text = "노란색에서 빨간색으로 변경될 때\n누구보다 빠르고 화면을 터치해보세요!"
+        case 3:
+            mainView.titleLabel.text = "보이지 않는 12초를\n예측해 보세요"
+            mainView.descriptionLabel.text = "시간 감각을 믿고 12초를 예측해보세요!\n얼마나 정확한지 확인해볼까요?"
+        default:
+            break
         }
-        
-        // 게임 시작 버튼
-        startButton.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.top.equalTo(iconImageView.snp.bottom).offset(30)
-            $0.width.equalTo(200)
-            $0.height.equalTo(50)
-        }
-        
-        startButton.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
     }
     
     // MARK: - Action
-
     @objc private func startButtonTapped() {
-        let gameVC = FakerGameViewController()
-//        let gameVC = StoptwelveGameViewController()
-        gameVC.modalPresentationStyle = .fullScreen
-        present(gameVC, animated: true)
+//        // kindOfGame 값 테스트를 위해 토글
+//        kindOfGame = (kindOfGame == 2) ? 3 : 2
+        
+        // 게임 화면으로 이동
+        let gameVC = RandomGameViewController()
+         gameVC.modalPresentationStyle = .fullScreen
+         present(gameVC, animated: true)
+    }
+    
+    @objc private func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
     }
 }
