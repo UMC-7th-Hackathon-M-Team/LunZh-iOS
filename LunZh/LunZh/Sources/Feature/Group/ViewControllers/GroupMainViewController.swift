@@ -12,7 +12,7 @@ class GroupMainViewController: UIViewController {
     
     private lazy var isGameResultLoading: Bool = true
     private lazy var groupMainView = GroupMainView()
-    private lazy var gameResultWaitingView = GameResultWaitingView()
+    private lazy var gameResultWaitingView = GameResultWaitingBodyView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
