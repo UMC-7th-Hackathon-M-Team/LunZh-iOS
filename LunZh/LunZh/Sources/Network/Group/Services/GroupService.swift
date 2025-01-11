@@ -35,6 +35,7 @@ public final class GroupService : NetworkManager {
             completion: completion
         )
     }
+
     /// 그룹 생성 api
     public func postGroup(email: String, name: String, completion: @escaping (Result<GroupResponseDTo, NetworkError>) -> Void) {
         request(
