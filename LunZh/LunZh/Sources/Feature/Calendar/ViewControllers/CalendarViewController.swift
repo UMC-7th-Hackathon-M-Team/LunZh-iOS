@@ -7,23 +7,40 @@
 
 import UIKit
 
-class CalendarViewController: UIViewController {
+class CalendarViewController: UIViewController, UICalendarViewDelegate, UICalendarSelectionSingleDateDelegate {
+    var customCalendarView: CalendarView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        self.view.backgroundColor = .white
+        setupView()
     }
-    
 
-    /*
-    // MARK: - Navigation
+    private func setupView() {
+        customCalendarView = CalendarView(frame: self.view.bounds)
+        self.view.addSubview(customCalendarView)
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        // 캘린더 델리게이트 설정
+        customCalendarView.calendarView.delegate = self
     }
-    */
 
+    // 모든 날짜에 햄버거 이모지 표시
+    func calendarView(_ calendarView: UICalendarView, decorationFor dateComponents: DateComponents) -> UICalendarView.Decoration? {
+        return .customView {
+            let label = UILabel()
+            label.text = "🍔"
+            label.font = UIFont.systemFont(ofSize: 16) // 날짜 크기 조정
+            label.textAlignment = .center
+            return label
+        }
+    }
+
+    // 날짜 선택 처리
+    func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
+        guard let dateComponents = dateComponents else { return }
+        print("Selected date: \(dateComponents)")
+        
+        customCalendarView.calendarView.tintColor = UIColor.gray700 // 원하는 색상으로 변경
+
+    }
 }
