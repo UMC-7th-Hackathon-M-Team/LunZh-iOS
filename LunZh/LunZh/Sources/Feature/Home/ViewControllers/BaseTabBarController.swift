@@ -32,18 +32,18 @@ class BaseTabBarController: UITabBarController {
     private func setupViewControllers() {
         let firstVC = UIViewController()
         firstVC.view.backgroundColor = .white
-        firstVC.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "star.fill"), tag: 0)
+        firstVC.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "calendar"), tag: 0)
         
         let secondVC = UIViewController()
         secondVC.view.backgroundColor = .white
-        secondVC.tabBarItem = UITabBarItem(title: "Contacts", image: UIImage(systemName: "person.fill"), tag: 1)
+        secondVC.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "person.fill"), tag: 1)
         
         self.viewControllers = [firstVC, secondVC]
     }
 
     // MARK: - SnapKit을 사용하여 중앙 플로팅 버튼 추가
     private func setupFloatingButton() {
-        floatingButton.setImage(UIImage(systemName: "plus"), for: .normal)
+        floatingButton.setImage(UIImage(named: "home"), for: .normal)
         floatingButton.tintColor = .white
         floatingButton.backgroundColor = .systemBlue
         floatingButton.layer.cornerRadius = 31.5

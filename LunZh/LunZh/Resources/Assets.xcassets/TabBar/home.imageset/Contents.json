@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Ellipse 4.png",
+      "filename" : "game nav.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "game nav@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "game nav@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
