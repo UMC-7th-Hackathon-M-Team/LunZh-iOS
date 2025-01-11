@@ -8,18 +8,28 @@
 import UIKit
 import CoreData
 import UserNotifications
+import KakaoSDKCommon
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
-
+    
+    var window: UIWindow?
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // 알림 델리게이트 설정
+      // 알림 델리게이트 설정
         UNUserNotificationCenter.current().delegate = self
         
         // 알림 권한 요청 및 스케줄링
         NotificationManager.shared.requestAuthorization()
-        NotificationManager.shared.scheduleNotification()
-        
+        NotificationManager.shared.scheduleNotification()  
+      
+      // Override point for customization after application launch.
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.rootViewController = BaseTabBarController()
+        window?.makeKeyAndVisible()
+        if let kakaoAPIkey = Bundle.main.object(forInfoDictionaryKey: "KAKAO_NATIVE_APP_KEY") as? String {
+            KakaoSDK.initSDK(appKey: "\(kakaoAPIkey)")
+        }
         return true
     }
     

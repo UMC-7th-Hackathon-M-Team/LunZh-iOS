@@ -39,5 +39,6 @@ class CustomButton: UIButton {
     
     public func isEnabled(isEnabled: Bool){
         self.backgroundColor = isEnabled ? Constants.Colors.yellow60 : Constants.Colors.gray300
+        self.titleLabel?.textColor = isEnabled ? Constants.Colors.gray800 : Constants.Colors.gray500
     }
 }
