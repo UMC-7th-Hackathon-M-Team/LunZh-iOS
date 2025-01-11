@@ -20,6 +20,11 @@ class MyTasteViewController: UIViewController {
     
     let nickname: String
     
+    
+    var userId: Int? {
+            UserDefaults.standard.object(forKey: "userId") as? Int
+        }
+    
     let descriptionLabel = UILabel().then {
         $0.text = "관심 있는 음식을\n선택해 주세요!"
         $0.font = UIFont.ptdBoldFont(ofSize: 24)
@@ -116,7 +121,7 @@ class MyTasteViewController: UIViewController {
     }
     
     @objc private func nextButtonTapped() {
-        self.authManager.postMemberInfo(memberId: 8, nickName: nickname, preferFood: selectedItems){ [weak self] result in
+        self.authManager.postMemberInfo(memberId: userId!, nickName: nickname, preferFood: selectedItems){ [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let response):
