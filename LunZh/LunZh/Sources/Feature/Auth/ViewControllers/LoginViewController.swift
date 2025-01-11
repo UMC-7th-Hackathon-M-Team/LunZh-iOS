@@ -168,9 +168,15 @@ class LoginViewController: UIViewController {
         }
     }
     
-    func saveUserId(userId : Int) {
+    func saveUser(userId : Int, userImage: String, userEmail: String) {
         // 로그아웃 시, 이 데이터 모두 삭제
         let userIdString = "\(userId)"
         UserDefaults.standard.set(userId, forKey: "userId")
+        
+        let userImageString = "\(userImage)"
+        UserDefaults.standard.set(userImageString, forKey: "userImage")
+        
+        let userEmailString = "\(userEmail)"
+        UserDefaults.standard.set(userEmailString, forKey: "userEmail")
     }
 }
