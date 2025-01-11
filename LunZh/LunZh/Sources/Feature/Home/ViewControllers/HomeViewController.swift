@@ -11,14 +11,53 @@ import Then
 
 class HomeViewController: UIViewController {
     
+    let networkService = HomeService()
+    
+    var userId: Int? {
+        UserDefaults.standard.object(forKey: "userId") as? Int
+    }
+    
+    var memberName: String = "런지" {
+        didSet {
+            label1.text = "\(memberName) 님, 오늘"
+        }
+    }
+    
+    var teamName: String = "" {
+        didSet {
+            updateButtonTitle()
+        }
+    }
+    
+    var hasGroup: Bool = false {
+        didSet {
+            if hasGroup {
+                enterGroupBtn.isHidden = false
+                notJoinGroupView.isHidden = true
+                saveHasGroup(hasGroup: true)
+                
+            } else {
+                enterGroupBtn.isHidden = true
+                notJoinGroupView.isHidden = false
+                saveHasGroup(hasGroup: true)
+            }
+        }
+    }
+    
+    func saveHasGroup(hasGroup: Bool) {
+        // 로그아웃 시, 이 데이터 모두 삭제
+        UserDefaults.standard.set(hasGroup, forKey: "hasGroup")
+    }
+    
+    private func updateButtonTitle() {
+        enterGroupBtn.configure(title: teamName, subTitle: "그룹방에 입장하기", backgrounColor: UIColor.yellow60)
+    }
+    
     private let logo = UIImageView().then {
         $0.image = UIImage(named: "logo")
     }
     
-    
-    // ✅ 뷰 구성 요소 정의 (Then 사용)
     private let label1 = UILabel().then {
-        $0.text = "철수 님, 오늘"
         $0.font = UIFont.ptdBoldFont(ofSize: 24)
         $0.textColor = .black
         $0.textAlignment = .center
@@ -52,7 +91,7 @@ class HomeViewController: UIViewController {
         $0.isHidden = !(hasGroup ?? false)
     }
     
-    private lazy var enterGroupBtn = HomeCustomButton(title: "그레이스",
+    private lazy var enterGroupBtn = HomeCustomButton(title: teamName,
                                                 subTitle: "그룹방에 입장하기",
                                                 imageColor: UIColor.gray700,
                                                     backgroundColor: UIColor.yellow60).then {
@@ -94,13 +133,12 @@ class HomeViewController: UIViewController {
         navigationController?.pushViewController(groupMainVC, animated: false)
     }
     
-    // ✅ 데이터 및 타이머 변수
+    // 데이터 및 타이머 변수
     private var textList = Constants.TasteList
     private let imageNames = ["banner", "banner", "banner"]
     private var currentIndex = 0
     private var timer: Timer?
 
-    // ✅ MARK: - 뷰 로딩
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -109,14 +147,13 @@ class HomeViewController: UIViewController {
         configureCollectionView()
         setupTimers()
         setupGestures()
+        fetchHomeAPI(user: userId!)
     }
     
-    // ✅ MARK: - 뷰 추가 (addSubview)
     private func setupViews() {
         [logo, collectionView, label1, label2, notJoinGroupView, enterGroupBtn].forEach { view.addSubview($0) }
     }
 
-    // ✅ MARK: - SnapKit 제약 설정
     private func setupConstraints() {
         
         logo.snp.makeConstraints { make in
@@ -151,7 +188,6 @@ class HomeViewController: UIViewController {
         }
     }
     
-    // ✅ MARK: - 컬렉션 뷰 설정
     private func configureCollectionView() {
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -159,45 +195,45 @@ class HomeViewController: UIViewController {
     }
 
     private func setupTimers() {
-        // ✅ 첫 번째 텍스트 설정 (노란색 강조)
+        // 첫 번째 텍스트 설정 (노란색 강조)
         updateLabelWithHighlightedText()
         
-        // ✅ 텍스트 변경 타이머
+        // 텍스트 변경 타이머
         Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(changeLabelText), userInfo: nil, repeats: true)
         
-        // ✅ 배너 자동 슬라이드 타이머
+        // 배너 자동 슬라이드 타이머
         timer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(scrollToNextItem), userInfo: nil, repeats: true)
     }
 
     @objc private func changeLabelText() {
-        // ✅ 인덱스 업데이트
+        // 인덱스 업데이트
         self.currentIndex = (self.currentIndex + 1) % self.textList.count
         updateLabelWithHighlightedText()
     }
 
-    // ✅ 노란색 강조 텍스트를 설정하는 메서드
+    // 노란색 강조 텍스트를 설정하는 메서드
     private func updateLabelWithHighlightedText() {
         let updatedText = textList[currentIndex]
         let fullText = "\(updatedText) 어떠세요?"
         
-        // ✅ AttributedString 설정
+        // AttributedString 설정
         let attributedString = NSMutableAttributedString(string: fullText)
         
-        // ✅ 특정 텍스트만 노란색으로 강조
+        // 특정 텍스트만 노란색으로 강조
         let range = (fullText as NSString).range(of: updatedText)
         attributedString.addAttributes([
             .foregroundColor: UIColor.systemYellow,
             .font: UIFont.boldSystemFont(ofSize: 24)
         ], range: range)
         
-        // ✅ 애니메이션과 함께 텍스트 설정
+        // 애니메이션과 함께 텍스트 설정
         UIView.transition(with: label2, duration: 0.8, options: .transitionCrossDissolve, animations: {
             self.label2.attributedText = attributedString
         })
     }
 
 
-    // ✅ MARK: - 컬렉션 뷰 자동 슬라이드
+    // MARK: - 컬렉션 뷰 자동 슬라이드
     @objc private func scrollToNextItem() {
         if currentIndex < imageNames.count - 1 {
             currentIndex += 1
@@ -207,9 +243,28 @@ class HomeViewController: UIViewController {
         
         collectionView.scrollToItem(at: IndexPath(item: currentIndex, section: 0), at: .centeredHorizontally, animated: true)
     }
+    
+    // MARK: - API 연결
+    func fetchHomeAPI(user: Int) {
+        networkService.getHomeInfo(data: user) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let responseData) :
+                DispatchQueue.main.async {
+                    self.memberName = responseData.memberName ?? "런지"
+                    self.teamName = responseData.groupName ?? ""
+                    self.hasGroup = responseData.hasGroup
+                }
+            case .failure(let error) :
+                print("\(error)")
+            }
+        }
+    }
+    
 }
 
-// ✅ MARK: - UICollectionViewDataSource & Delegate
+// MARK: - UICollectionViewDataSource & Delegate
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -224,7 +279,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         return cell
     }
     
-    // ✅ 컬렉션 뷰 셀 크기 조정
+    // 컬렉션 뷰 셀 크기 조정
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
     }

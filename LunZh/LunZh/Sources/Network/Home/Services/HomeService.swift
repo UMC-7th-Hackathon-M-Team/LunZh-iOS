@@ -24,7 +24,7 @@ public final class HomeService : NetworkManager {
         request(target: .getHomeInfo(userId: data), decodingType: HomeInfoResponseDTO.self, completion: completion)
     }
     
-    public func getCalendarInfo(data: Int, completion: @escaping (Result<CalendarInfoResponseDTO, NetworkError>) -> Void) {
-        request(target: .getCalendarInfo(userId: data), decodingType: CalendarInfoResponseDTO.self, completion: completion)
+    public func getCalendarInfo(data: Int, completion: @escaping (Result<[CalendarInfoResponseDTO], NetworkError>) -> Void) {
+        request(target: .getCalendarInfo(userId: data), decodingType: [CalendarInfoResponseDTO].self, completion: completion)
     }
 }

@@ -2,21 +2,12 @@
 import Foundation
 
 public struct HomeInfoResponseDTO : Decodable {
-    public let username : String?
-    public let role : String?
-    public let isFirst : Bool
-    public let id: Int
+    public let memberName : String?
+    public let hasGroup : Bool
+    public let groupName : String?
 }
 
 public struct CalendarInfoResponseDTO : Codable {
-    let id : Int
-    let name : String
-    let username : String
-    let role: String
-    let isNewBie : Bool?
-    let isFirst : Bool
-    let monthPriceMax : Int
-    let wineSort : [String]
-    let wineArea : [String]
-    let region : String
+    let date : String
+    let food : String
 }
