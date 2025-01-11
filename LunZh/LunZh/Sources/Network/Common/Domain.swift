@@ -1,17 +1,10 @@
-
 import UIKit
 
 public struct API {
-    public static let baseURL = "https://drinkeg.com"
-    public static let commentURL = "\(baseURL)/comments"
-    public static let recommentURL = "\(baseURL)/recomments"
-    public static let tastingNoteURL = "\(baseURL)/tasting-note"
-    public static let wineClassURL = "\(baseURL)/wine-class"
-    public static let wineLectureURL = "\(baseURL)/wine-lecture"
-    public static let wineLectureCompleteURL = "\(baseURL)/wine-lecture-complete"
-    public static let wineURL = "\(baseURL)/wine"
-    public static let wishlistURL = "\(baseURL)/wine-wishlist"
-    public static let myWineURL = "\(baseURL)/my-wine"
-    public static let memberURL = "\(baseURL)/member"
-    public static let noticeURL = "\(baseURL)/notice"
+    public static let baseURL = "http://3.105.184.55:8080"
+    public static let homeURL = "\(baseURL)/home"
+    public static let calendarURL = "\(baseURL)/calendar"
+    public static let gameURL = "\(baseURL)/game"
+    public static let groupURL = "\(baseURL)/group"
+    public static let profileURL = "\(baseURL)/mypage"
 }
