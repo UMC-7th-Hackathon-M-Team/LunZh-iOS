@@ -12,7 +12,7 @@ class GameMainViewController: UIViewController {
     // MARK: - Properties
     private let mainView = GameMainView()
     private let navBarManager = NavigationBarManager()
-    private var kindOfGame: Int = 1 {
+    private var kindOfGame: Int = 2 {
         didSet {
             updateTextForKindOfGame()
         }
@@ -85,7 +85,6 @@ class GameMainViewController: UIViewController {
 
         if gameNumber == 1 {
             navigationController?.pushViewController(gameVC1, animated: true)
-            
         } else if gameNumber == 2 {
             gameVC2.modalPresentationStyle = .fullScreen
             present(gameVC2, animated: true)

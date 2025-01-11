@@ -49,7 +49,7 @@ class GetMenuViewController: UIViewController {
     }
     
     @objc private func menuGameStartBtnTapped() {
-        self.gameService.gameStart(teamId: 7, memeberId: 4){ [weak self] result in
+        self.gameService.gameStart(teamId: 1, memeberId: 5){ [weak self] result in
             guard let self = self else { return }
                         
             switch result {

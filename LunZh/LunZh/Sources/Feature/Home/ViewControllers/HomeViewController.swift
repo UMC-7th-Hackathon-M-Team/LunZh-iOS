@@ -88,14 +88,18 @@ class HomeViewController: UIViewController {
     }
     
     private lazy var notJoinGroupView = NotJoinGroupView().then {
-        $0.isHidden = false
+        $0.isHidden = !(hasGroup ?? false)
     }
     
     private lazy var enterGroupBtn = HomeCustomButton(title: teamName,
                                                 subTitle: "그룹방에 입장하기",
                                                 imageColor: UIColor.gray700,
                                                     backgroundColor: UIColor.yellow60).then {
-        $0.isHidden = true
+        $0.isHidden = hasGroup ?? true
+    }
+    
+    var hasGroup: Bool? {
+        UserDefaults.standard.object(forKey: "hasGroup") as? Bool
     }
     
     func setupGestures() {

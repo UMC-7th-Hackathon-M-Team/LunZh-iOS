@@ -29,6 +29,7 @@ class FakerGameViewController: UIViewController {
         UserDefaults.standard.object(forKey: "teamId") as? Int
     }
     
+    
     var gameNumber: Int? {
         UserDefaults.standard.object(forKey: "gameNumber") as? Int
     }
@@ -74,6 +75,7 @@ class FakerGameViewController: UIViewController {
                 self?.startGame()
             }
         }
+        print(teamId as Any)
     }
     
     private func startGame() {
