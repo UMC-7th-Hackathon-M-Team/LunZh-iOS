@@ -44,7 +44,7 @@ class BaseTabBarController: UITabBarController {
     private func setupViewControllers() {
         let firstVC = CalendarViewController()
         firstVC.view.backgroundColor = .white
-        let calendar = UIImage(systemName: "calendar")?.resize(by: 1.7)
+        let calendar = UIImage(systemName: "chart.bar.fill")?.resize(by: 1.7)
         firstVC.tabBarItem = UITabBarItem(title: "", image: calendar, tag: 0)
         firstVC.tabBarItem.imageInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: -20)
         
