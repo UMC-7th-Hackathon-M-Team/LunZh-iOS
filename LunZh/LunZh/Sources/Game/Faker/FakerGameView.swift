@@ -5,34 +5,37 @@
 //  Created by 황상환 on 1/11/25.
 //
 
-import Foundation
 import UIKit
 import SnapKit
 import Then
 
 class FakerGameView: UIView {
-    
-    // MARK: - UI Component
-    let countdownLabel = UILabel().then {
-        $0.textColor = .white
-        $0.font = UIFont.ptdBoldFont(ofSize: 60)
+    // MARK: - Properties
+    let countImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
     }
     
     let resultLabel = UILabel().then {
-        $0.textColor = .white
-        $0.font = UIFont.ptdBoldFont(ofSize: 40)
-        $0.isHidden = true
-    }
+       $0.textColor = .white
+       $0.font = .systemFont(ofSize: 50, weight: .bold) // 폰트 크기 수정
+       $0.textAlignment = .center
+   }
+   
+   let resultButton = UIButton().then {
+       $0.setTitle("결과 재출하기", for: .normal)
+       $0.backgroundColor = .yellow60
+       $0.layer.cornerRadius = 90
+       $0.layer.masksToBounds = true
+       $0.setTitleColor(.black, for: .normal)
+       $0.titleLabel?.font = .systemFont(ofSize: 18, weight: .bold)
+       $0.isHidden = true
+   }
     
-    let exitButton = UIButton().then {
-        $0.setTitle("종료하기", for: .normal)
-        $0.backgroundColor = .white
-        $0.setTitleColor(.black, for: .normal)
-        $0.layer.cornerRadius = 10
-        $0.isHidden = true
-    }
+//    let exampleButton = CustomRoundedButton(title: "결과 제출", titleColor: Constants.Colors.gray800!, backgroundColor: Constants.Colors.yellow60!)
+//    
     
-    // MARK: - Lifecycle
+    
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -44,54 +47,27 @@ class FakerGameView: UIView {
     
     // MARK: - Setup
     private func setupUI() {
-        backgroundColor = .red
+        backgroundColor = .black
         
-        addSubview(countdownLabel)
+        addSubview(countImageView)
         addSubview(resultLabel)
-        addSubview(exitButton)
+        addSubview(resultButton)
         
-        setupConstraints()
-    }
-    
-    private func setupConstraints() {
-        countdownLabel.snp.makeConstraints {
+        countImageView.snp.makeConstraints {
             $0.center.equalToSuperview()
+            $0.width.height.equalTo(200)
         }
         
         resultLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
+            $0.centerY.equalToSuperview().offset(-80)
         }
         
-        exitButton.snp.makeConstraints {
+        resultButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(resultLabel.snp.bottom).offset(30)
-            $0.height.equalTo(50)
-            $0.width.equalTo(150)
+            $0.top.equalTo(resultLabel.snp.bottom).offset(20)
+            $0.height.equalTo(180)
+            $0.width.equalTo(180)
         }
-    }
-    
-    // 게임 시작 시, 배경색 변경
-    func updateBackgroundColor(_ color: UIColor) {
-        backgroundColor = color
-    }
-    
-    // 게임 종류 후, 결과 띄우기
-    func showResult(_ text: String) {
-        resultLabel.text = text
-        resultLabel.isHidden = false
-        exitButton.isHidden = false
-    }
-    
-    // 시간 카운트 가리기
-    func hidenCountdown() {
-        countdownLabel.isHidden = true
-    }
-    
-    // 일찍 눌렀을 때
-    func showTooEarlyMessage() {
-        countdownLabel.isHidden = false
-        resultLabel.text = "너무 일찍 탭했습니다!"
-        resultLabel.isHidden = false
-        exitButton.isHidden = false
     }
 }

@@ -9,87 +9,91 @@ import Foundation
 import UIKit
 
 class FakerGameViewController: UIViewController {
-    
     // MARK: - Properties
-    private var gameModel = FakerGameModel()
-    private var gameView: FakerGameView!
+    private let gameView = FakerGameView()
+    private var startTime: Date?
     private var timer: Timer?
-    private var tapGesture: UITapGestureRecognizer!
+    private var randomInterval: TimeInterval = 0
+    private var isGameStarted = false
+    private var isColorChanged = false 
+
     
     // MARK: - Lifecycle
     override func loadView() {
-        gameView = FakerGameView(frame: UIScreen.main.bounds)
         view = gameView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupActions()
-        startCountdown()
+        setupGame()
     }
     
     // MARK: - Setup
-    private func setupActions() {
-        gameView.exitButton.addTarget(self,
-                                    action: #selector(exitButtonTapped),
-                                    for: .touchUpInside)
-        
-        tapGesture = UITapGestureRecognizer(target: self,
-                                               action: #selector(screenTapped))
-        tapGesture.isEnabled = false  // 초기에는 비활성화
+    private func setupGame() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(tapGesture)
+        
+        gameView.resultButton.addTarget(self, action: #selector(restartGame), for: .touchUpInside)
+        
+        startCountdown()
     }
     
     // MARK: - Game Logic
     private func startCountdown() {
-        gameModel.startCountdown()
         var count = 3
-        gameView.countdownLabel.text = "\(count)"
-        tapGesture.isEnabled = false  // 카운트다운 중에는 터치 비활성화
+        gameView.countImageView.image = UIImage(named: "\(count)")
         
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
             count -= 1
-            self?.gameView.countdownLabel.text = count > 0 ? "\(count)" : ""
-           
-            if count == 0 {
+            
+            if count > 0 {
+                self?.gameView.countImageView.image = UIImage(named: "\(count)")
+            } else {
+                self?.gameView.countImageView.image = nil
                 timer.invalidate()
                 self?.startGame()
             }
         }
     }
-   
+    
     private func startGame() {
-        gameView.hidenCountdown()
-        gameModel.startGame()
-        tapGesture.isEnabled = true  // 카운트다운 중에는 터치 비활성화
-       
-        let randomInterval = Double.random(in: 1...12)
-        print("몇 초? : ", randomInterval)
-        timer = Timer.scheduledTimer(withTimeInterval: randomInterval,
-                                  repeats: false) { [weak self] _ in
-            self?.gameView.updateBackgroundColor(.systemGreen)
-            self?.gameModel.setStartTime(Date())
+        gameView.backgroundColor = .yellow60
+        isGameStarted = true
+        randomInterval = TimeInterval(Int.random(in: 1...12))
+        startTime = Date()
+        
+        timer = Timer.scheduledTimer(withTimeInterval: randomInterval, repeats: false) { [weak self] _ in
+            self?.gameView.backgroundColor = .red80
+            self?.isColorChanged = true
+            self?.startTime = Date()
         }
     }
-       
-    // MARK: - Actions
-    @objc private func screenTapped() {
-        let isGreenBackground = gameView.backgroundColor == .systemGreen
-        let result = gameModel.calculateResult(currentTime: Date(),
-                                             backgroundColor: isGreenBackground)
+    
+    @objc private func handleTap() {
+        guard isGameStarted else { return }
         
-        if result.isTooEarly {
-            gameView.showTooEarlyMessage()
-            timer?.invalidate()
-        } else {
-            gameView.showResult(result.message)
+        if let startTime = startTime {
+            let currentTime = Date()
+            let reactionTime = currentTime.timeIntervalSince(startTime)
+            
+            if isColorChanged {
+                // 배경색을 빨간색으로 변경
+                gameView.backgroundColor = .gray700
+                
+                // 결과 텍스트 스타일 수정
+                gameView.resultLabel.text = "\(Int(reactionTime * 1000))ms"
+                gameView.resultLabel.font = .systemFont(ofSize: 60, weight: .bold) // 폰트 크기 증가
+                
+                // 결과 버튼 스타일 수정
+                gameView.resultButton.isHidden = false
+                
+                isGameStarted = false
+                timer?.invalidate()
+            }
         }
-        
-        gameModel.endGame()
-        tapGesture.isEnabled = false  // 게임 종료 시 터치 비활성화
     }
-       
-    @objc private func exitButtonTapped() {
-        dismiss(animated: true)
+    
+    @objc private func restartGame() {
+        self.dismiss(animated: true)
     }
 }

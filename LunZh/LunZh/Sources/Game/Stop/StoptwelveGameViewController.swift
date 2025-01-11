@@ -43,21 +43,33 @@ class StoptwelveGameViewController: UIViewController {
     private func startCountdown() {
         var count = 3
         gameView.countdownLabel.text = "\(count)"
-        
+        gameView.countdownLabel.textColor = .red40 // 처음 색
+        gameView.countdownLabel.font = UIFont.ptdBoldFont(ofSize: 60)
+
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
             count -= 1
-            self?.gameView.countdownLabel.text = count > 0 ? "\(count)" : ""
             
-            if count == 0 {
+            // count 값에 따라 색상 변경
+            switch count {
+            case 2:
+                self?.gameView.countdownLabel.textColor = .red60  // 중간 빨간색 (2)
+            case 1:
+                self?.gameView.countdownLabel.textColor = .red100  // 진한 빨간색 (1)
+            case 0:
+                self?.gameView.countdownLabel.text = ""
                 timer.invalidate()
                 self?.startGame()
+                return
+            default:
+                break
             }
+            
+            self?.gameView.countdownLabel.text = count > 0 ? "\(count)" : ""
         }
     }
     
     private func startGame() {
         gameModel.startGame()
-        gameView.countdownLabel.text = "시작!"
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             self?.gameView.showStartMessage()
@@ -69,7 +81,11 @@ class StoptwelveGameViewController: UIViewController {
         guard gameModel.isGameStarted else { return }
         
         let result = gameModel.calculateResult(currentTime: Date())
-        gameView.showResult(result.message)
+        gameView.showResult(
+            elapsedTime: result.elapsedTime,
+            difference: result.difference,
+            isEarly: result.elapsedTime < result.targetTime
+        )
         gameModel.endGame()
     }
     

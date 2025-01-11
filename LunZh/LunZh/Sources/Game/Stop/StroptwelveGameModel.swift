@@ -16,12 +16,18 @@ struct StoptwelveGameModel {
     struct GameResult {
         let elapsedTime: Double
         let difference: Double
+        let targetTime: Double = 12.12
         
-        var message: String {
-            let elapsedText = String(format: "멈춘 시간: %.2f초", elapsedTime)
-            let differenceText = String(format: "목표시간과의 차이: %.2f초", difference)
-            return "\(elapsedText)\n\(differenceText)"
-        }
+//        var message: String {
+//            let resultText = String("결과")
+//            let elapsedText = String(format: "%.2f초", elapsedTime)
+//            let differenceText = if elapsedTime < targetTime {
+//                String(format: "목표시간보다 %.2f초 빨랐어요!", difference)
+//            } else {
+//                String(format: "목표시간보다 %.2f초 느렸어요!", difference)
+//            }
+//            return "\(resultText)\n\(elapsedText)\n\(differenceText)"
+//        }
     }
     
     mutating func startGame() {

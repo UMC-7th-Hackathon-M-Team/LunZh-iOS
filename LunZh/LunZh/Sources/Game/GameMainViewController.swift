@@ -61,8 +61,8 @@ class GameMainViewController: UIViewController {
     // MARK: - Action
 
     @objc private func startButtonTapped() {
-//        let gameVC = FakerGameViewController()
-        let gameVC = StoptwelveGameViewController()
+        let gameVC = FakerGameViewController()
+//        let gameVC = StoptwelveGameViewController()
         gameVC.modalPresentationStyle = .fullScreen
         present(gameVC, animated: true)
     }
