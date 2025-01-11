@@ -6,24 +6,47 @@
 //
 
 import UIKit
-
+import SnapKit
+import Then
 class GroupMainViewController: UIViewController {
-
+    
+    private lazy var isGameResultLoading: Bool = true
+    private lazy var groupMainView = GroupMainView()
+    private lazy var gameResultWaitingView = GameResultWaitingView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        self.view = groupMainView
+        //self.view = gameResultWaitingView
+        view.backgroundColor = .white
+        
+        groupMainView.groupMainAppBar.sharingBtn.addTarget(self, action: #selector(sharingTapped), for: .touchUpInside)
+        groupMainView.groupMainAppBar.exitBtn.addTarget(self, action: #selector(exitTapped), for: .touchUpInside)
+        
+        //groupMainView.groupMainBody.gameStartBtn.addTarget(self, action: #selector(gameStartTapped), for: .touchUpInside)
+        
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @objc func sharingTapped(){
+        let sharingDialogVC = SharingDialogViewController()
+        sharingDialogVC.modalPresentationStyle = .overFullScreen
+        present(sharingDialogVC, animated: false, completion: nil)
     }
-    */
+    
+    @objc func exitTapped(){
+        let exitDialogVC = ExitDialogViewController()
+        exitDialogVC.modalPresentationStyle = .overFullScreen
+        present(exitDialogVC, animated: false, completion: nil)
+    }
+    
+    @objc func gameStartTapped(){
+        let getMenuVC = GetMenuViewController()
+        
+        getMenuVC.modalPresentationStyle = .fullScreen
+        present(getMenuVC, animated: false, completion: nil)
+    }
+    
+    
+
 
 }
