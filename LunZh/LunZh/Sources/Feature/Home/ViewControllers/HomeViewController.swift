@@ -12,7 +12,7 @@ import Then
 class HomeViewController: UIViewController {
     
     private let logo = UIImageView().then {
-        $0.image = 
+        $0.image = UIImage(named: "logo")
     }
     
     // ✅ 뷰 구성 요소 정의 (Then 사용)
@@ -24,19 +24,68 @@ class HomeViewController: UIViewController {
         $0.numberOfLines = 1
     }
     
-    private let label2 = UILabel().then {
+    private lazy var label2 = UILabel().then {
         $0.font = UIFont.ptdBoldFont(ofSize: 24)
         $0.textColor = .black
         $0.textAlignment = .center
         $0.numberOfLines = 1
     }
     
-    private var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
         let layout = $0.collectionViewLayout as! UICollectionViewFlowLayout
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0
         $0.isPagingEnabled = true
         $0.showsHorizontalScrollIndicator = false
+        
+        $0.backgroundColor = .clear
+        $0.layer.cornerRadius = 16
+        $0.layer.shadowOpacity = 0.3
+        $0.layer.shadowColor = UIColor.black.cgColor
+        $0.layer.shadowOffset = CGSize(width: 0, height: 2)
+        $0.layer.shadowRadius = 5
+        $0.layer.masksToBounds = false
+    }
+    
+    private lazy var notJoinGroupView = NotJoinGroupView().then {
+        $0.isHidden = true
+    }
+    
+    private lazy var enterGroupBtn = HomeCustomButton(title: "그레이스",
+                                                subTitle: "그룹방에 입장하기",
+                                                imageColor: UIColor.gray700,
+                                                    backgroundColor: UIColor.yellow60).then {
+        $0.isHidden = false
+    }
+    
+    func setupGestures() {
+        let btnTapGesture1 = UITapGestureRecognizer(target: self, action: #selector(makeGroupBtnTapped))
+        notJoinGroupView.makeGroupBtn.addGestureRecognizer(btnTapGesture1)
+        notJoinGroupView.makeGroupBtn.isUserInteractionEnabled = true
+        
+        let btnTapGesture2 = UITapGestureRecognizer(target: self, action: #selector(joinGroupBtnTapped))
+        notJoinGroupView.makeGroupBtn.addGestureRecognizer(btnTapGesture2)
+        notJoinGroupView.makeGroupBtn.isUserInteractionEnabled = true
+        
+        let btnTapGesture3 = UITapGestureRecognizer(target: self, action: #selector(enterGroupBtnTapped))
+        enterGroupBtn.addGestureRecognizer(btnTapGesture3)
+        enterGroupBtn.isUserInteractionEnabled = true
+    }
+    
+    @objc
+    private func makeGroupBtnTapped() {
+        let vc = ()
+        navigationController?.pushViewController(settingsVC, animated: false)
+    }
+    
+    @objc
+    private func joinGroupBtnTapped() {
+        
+    }
+    
+    @objc
+    private func enterGroupBtnTapped() {
+        
     }
     
     // ✅ 데이터 및 타이머 변수
@@ -57,13 +106,19 @@ class HomeViewController: UIViewController {
     
     // ✅ MARK: - 뷰 추가 (addSubview)
     private func setupViews() {
-        [collectionView, label1, label2].forEach { view.addSubview($0) }
+        [logo, collectionView, label1, label2, notJoinGroupView, enterGroupBtn].forEach { view.addSubview($0) }
     }
 
     // ✅ MARK: - SnapKit 제약 설정
     private func setupConstraints() {
+        
+        logo.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+            make.centerX.equalTo(view.safeAreaLayoutGuide)
+        }
+        
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(80)
+            make.top.equalTo(logo.snp.bottom).offset(25.2)
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(Constants.superViewHeight * 0.3)
         }
@@ -76,6 +131,16 @@ class HomeViewController: UIViewController {
         label2.snp.makeConstraints { make in
             make.top.equalTo(label1.snp.bottom)
             make.leading.equalTo(label1.snp.leading)
+        }
+        
+        notJoinGroupView.snp.makeConstraints { make in
+            make.top.equalTo(label2.snp.bottom).offset(27)
+            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        enterGroupBtn.snp.makeConstraints { make in
+            make.top.equalTo(label2.snp.bottom).offset(131)
+            make.centerX.equalTo(view.safeAreaLayoutGuide)
         }
     }
     

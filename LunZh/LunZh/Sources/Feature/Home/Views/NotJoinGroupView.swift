@@ -5,53 +5,47 @@
 //  Created by 이현주 on 1/12/25.
 //
 
-//import UIKit
-//
-//class NotJoinGroupView: UIView {
-//
-//    private lazy var 
-//    
-//    public lazy var entire: UILabel = {
-//        let l = UILabel()
-//        return l
-//    }()
-//    
-//    public lazy var savedTableView: UITableView = {
-//        let t = UITableView()
-//        t.register(SavedTableViewCell.self, forCellReuseIdentifier: "SavedTableViewCell")
-//        t.separatorStyle = .singleLine
-//        return t
-//    }()
-//
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//        self.backgroundColor = .white
-//        setUpUI()
-//    }
-//    
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//
-//    private func setUpUI() {
-//        addSubview(title)
-//        addSubview(entire)
-//        addSubview(savedTableView)
-//        
-//        title.snp.makeConstraints { make in
-//            make.top.equalTo(safeAreaLayoutGuide).offset(16)
-//            make.leading.equalTo(safeAreaLayoutGuide).offset(10)
-//        }
-//        
-//        entire.snp.makeConstraints { make in
-//            make.top.equalTo(title.snp.bottom).offset(16)
-//            make.leading.equalTo(safeAreaLayoutGuide).offset(13)
-//        }
-//        
-//        savedTableView.snp.makeConstraints { make in
-//            make.top.equalTo(entire.snp.bottom).offset(12)
-//            make.leading.trailing.equalTo(safeAreaLayoutGuide)
-//            make.bottom.equalTo(safeAreaLayoutGuide)
-//        }
-//    }
-//}
+import UIKit
+import Then
+
+class NotJoinGroupView: UIView {
+
+    public var makeGroupBtn = HomeCustomButton(title: "그룹 만들기",
+                                                    subTitle: "새로 그룹을 만들고 싶으신가요?",
+                                                imageColor: UIColor.gray300,
+                                                backgroundColor: UIColor.yellow20)
+    
+    public var joinGroupBtn = HomeCustomButton(title: "그룹 참여하기",
+                                                    subTitle: "친구에게 코드를 받으셨나요?",
+                                                imageColor: UIColor.gray300,
+                                                backgroundColor: UIColor.red20)
+        
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.backgroundColor = .white
+        addComponents()
+        constraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func addComponents() {
+        [makeGroupBtn, joinGroupBtn].forEach{ self.addSubview($0) }
+    }
+    
+    private func constraints() {
+        makeGroupBtn.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.centerX.equalToSuperview()
+        }
+        
+        joinGroupBtn.snp.makeConstraints {
+            $0.top.equalTo(makeGroupBtn.snp.bottom).offset(12)
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+    }
+}

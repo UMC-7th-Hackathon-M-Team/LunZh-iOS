@@ -26,8 +26,8 @@ class HomeCustomButton: UIView {
     }
 
     init(
-        title: String = "",
-        subTitle: String = "",
+        title: String,
+        subTitle: String,
         imageColor: UIColor,
         backgroundColor: UIColor
     ) {
