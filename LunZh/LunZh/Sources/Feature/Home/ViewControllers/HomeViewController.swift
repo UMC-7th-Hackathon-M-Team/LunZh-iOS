@@ -34,11 +34,19 @@ class HomeViewController: UIViewController {
             if hasGroup {
                 enterGroupBtn.isHidden = false
                 notJoinGroupView.isHidden = true
+                saveHasGroup(hasGroup: true)
+                
             } else {
                 enterGroupBtn.isHidden = true
                 notJoinGroupView.isHidden = false
+                saveHasGroup(hasGroup: true)
             }
         }
+    }
+    
+    func saveHasGroup(hasGroup: Bool) {
+        // 로그아웃 시, 이 데이터 모두 삭제
+        UserDefaults.standard.set(hasGroup, forKey: "hasGroup")
     }
     
     private func updateButtonTitle() {
