@@ -10,10 +10,12 @@ import SnapKit
 import Then
 class GroupMainViewController: UIViewController {
     private lazy var groupMainView = GroupMainView()
+    private lazy var gameResultWaitingView = GameResultWaitingView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view = groupMainView
+        //self.view = groupMainView
+        self.view = gameResultWaitingView
         view.backgroundColor = .white
         
         groupMainView.groupMainAppBar.sharingBtn.addTarget(self, action: #selector(sharingTapped), for: .touchUpInside)
