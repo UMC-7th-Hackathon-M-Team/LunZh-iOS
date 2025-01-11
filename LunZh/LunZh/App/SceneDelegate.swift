@@ -8,6 +8,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
+
         // 화면을 구성하는 UIWindow 인스턴스 생성
         let window = UIWindow(windowScene: windowScene)
         // 실제 첫 화면이 되는 MainViewController 인스턴스 생성
@@ -23,6 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         // makeKeyAndVisible() 메서드 호출
         window.makeKeyAndVisible()
+
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

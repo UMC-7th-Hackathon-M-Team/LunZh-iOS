@@ -7,15 +7,23 @@
 
 import UIKit
 import CoreData
+import UserNotifications
 import KakaoSDKCommon
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+      // 알림 델리게이트 설정
+        UNUserNotificationCenter.current().delegate = self
+        
+        // 알림 권한 요청 및 스케줄링
+        NotificationManager.shared.requestAuthorization()
+        NotificationManager.shared.scheduleNotification()  
+      
+      // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = BaseTabBarController()
         window?.makeKeyAndVisible()
@@ -24,7 +32,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return true
     }
-
+    
+    func userNotificationCenter(
+           _ center: UNUserNotificationCenter,
+           willPresent notification: UNNotification,
+           withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+       ) {
+           completionHandler([.banner, .sound])
+       }
+    
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
