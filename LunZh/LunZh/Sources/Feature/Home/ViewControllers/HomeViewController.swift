@@ -15,6 +15,7 @@ class HomeViewController: UIViewController {
         $0.image = UIImage(named: "logo")
     }
     
+    
     // ✅ 뷰 구성 요소 정의 (Then 사용)
     private let label1 = UILabel().then {
         $0.text = "철수 님, 오늘"
@@ -48,14 +49,14 @@ class HomeViewController: UIViewController {
     }
     
     private lazy var notJoinGroupView = NotJoinGroupView().then {
-        $0.isHidden = false
+        $0.isHidden = true
     }
     
     private lazy var enterGroupBtn = HomeCustomButton(title: "그레이스",
                                                 subTitle: "그룹방에 입장하기",
                                                 imageColor: UIColor.gray700,
                                                     backgroundColor: UIColor.yellow60).then {
-        $0.isHidden = true
+        $0.isHidden = false
     }
     
     func setupGestures() {
@@ -85,7 +86,8 @@ class HomeViewController: UIViewController {
     
     @objc
     private func enterGroupBtnTapped() {
-        
+        let groupMainVC = GroupMainViewController()
+        navigationController?.pushViewController(groupMainVC, animated: false)
     }
     
     // ✅ 데이터 및 타이머 변수

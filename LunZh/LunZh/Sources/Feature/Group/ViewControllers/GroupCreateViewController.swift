@@ -12,6 +12,11 @@ class GroupCreateViewController: UIViewController {
     private lazy var groupCreateView = GroupCreateView()
     let navigationBarManager = NavigationBarManager()
     let groupService = GroupService()
+    var teamId: String = "" {
+        didSet {
+            saveTeam(teamId: teamId)
+        }
+    }
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,6 +49,13 @@ class GroupCreateViewController: UIViewController {
         )
     }
     
+    func saveTeam(teamId : String) {
+        // 로그아웃 시, 이 데이터 모두 삭제
+        UserDefaults.standard.set(teamId, forKey: "teamId")
+        
+        UserDefaults.standard.set(true, forKey: "hasGroup")
+    }
+    
     @objc private func backButtonTapped() {
         navigationController?.popViewController(animated: true)
     }
@@ -55,6 +67,7 @@ class GroupCreateViewController: UIViewController {
             switch result {
             case .success(let response):
                 print(response)
+                self.teamId = "\(response.id)"
                 self.navigationController?.popViewController(animated: true)
             case .failure(let error):
                 print(error)
