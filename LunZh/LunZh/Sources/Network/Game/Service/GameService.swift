@@ -31,7 +31,7 @@ public final class GameService: NetworkManager {
         return GameRequestDTO(gameId: gameId, memberFood: memberFood, result: result)
     }
     
-    /// 게임 참여 POST API
+    /// 게임 참여 GET API
     public func gameStart(teamId: Int, memeberId: Int,  completion: @escaping (Result<GameResponsesDTO, NetworkError>) -> Void) {
         request(
             target: .gameStart(teamId: teamId, memeberId: memeberId),

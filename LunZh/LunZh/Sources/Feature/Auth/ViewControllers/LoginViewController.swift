@@ -130,6 +130,8 @@ class LoginViewController: UIViewController {
                         return
                     }
                     self.kakaoLoginProceed(userEmail: userEmail)
+                    let userProfileURL = "\(userProfile)"
+                    self.saveUser(userImage: userProfileURL, userEmail: userEmail)
                     UserDefaults.standard.set(userProfile, forKey: "userProfile")
                 }
             } else {
@@ -146,7 +148,7 @@ class LoginViewController: UIViewController {
             switch result {
             case .success(let response):
                 print("카카오 로그인 성공")
-//                saveUserId(userId: response.id)
+                self.saveUserId(userId: response.id)
                 self.goToNextView(response.isFirstLogin)
             case .failure(let error):
                 print(error)
@@ -164,11 +166,13 @@ class LoginViewController: UIViewController {
         }
     }
     
-    func saveUser(userId : Int, userImage: String, userEmail: String) {
+    func saveUserId(userId : Int) {
         // 로그아웃 시, 이 데이터 모두 삭제
         let userIdString = "\(userId)"
         UserDefaults.standard.set(userId, forKey: "userId")
-        
+    }
+    
+    func saveUser(userImage: String, userEmail: String) {
         let userImageString = "\(userImage)"
         UserDefaults.standard.set(userImageString, forKey: "userImage")
         

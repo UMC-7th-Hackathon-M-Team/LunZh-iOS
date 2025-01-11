@@ -52,8 +52,8 @@ class GroupMainBody: UIView {
 
     
     
-    // 게임시작 버튼
-    public lazy var gameStartBtn = UIButton().then{
+    // 메뉴 선정 버튼
+    public lazy var menuSelectBtn = UIButton().then{
         $0.setImage(UIImage(named: "gameStartBtn"), for: .normal)
         $0.imageView?.contentMode = .scaleAspectFit
     }
@@ -92,7 +92,7 @@ class GroupMainBody: UIView {
 //    }
     
     private func addComponents(){
-        [title1, title2, gameStartBtn].forEach(self.addSubview)
+        [title1, title2, menuSelectBtn].forEach(self.addSubview)
     }
     
     private func constraints(){
@@ -108,9 +108,9 @@ class GroupMainBody: UIView {
             $0.left.equalToSuperview().offset(20)
         }
         
-        gameStartBtn.snp.makeConstraints{
+        menuSelectBtn.snp.makeConstraints{
             $0.top.equalTo(title2.snp.bottom).offset(95)
-            $0.horizontalEdges.equalToSuperview().inset(70)
+            $0.horizontalEdges.equalToSuperview().inset(50)
         }
     }
 }
