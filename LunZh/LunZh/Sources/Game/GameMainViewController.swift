@@ -17,6 +17,10 @@ class GameMainViewController: UIViewController {
             updateTextForKindOfGame()
         }
     }
+    
+    var gameNumber: Int?
+    var foodName: String?
+    
 
     // MARK: - Lifecycle
     override func loadView() {
@@ -25,6 +29,15 @@ class GameMainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let gameNumber = gameNumber {
+            print("받아온 게임 넘버는 \(gameNumber)입니다")
+            kindOfGame = gameNumber
+        }
+        if let menu = foodName{
+            print("받아온 메뉴는 \(menu)입니다")
+            
+        }
         setupNavigationBar()
         setupActions()
         updateTextForKindOfGame() // 초기 텍스트 설정
