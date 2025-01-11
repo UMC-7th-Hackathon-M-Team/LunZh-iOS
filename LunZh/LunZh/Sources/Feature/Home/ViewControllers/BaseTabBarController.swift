@@ -18,42 +18,61 @@ class BaseTabBarController: UITabBarController {
         setupCustomTabBar()
         setupViewControllers()
         setupFloatingButton()
+        
+        selectedIndex = 1
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // 기존 탭바 프레임을 가져와 높이를 조정
+        var tabFrame = tabBar.frame
+        tabFrame.size.height = 90 // 높이 증가
+        tabFrame.origin.y = view.frame.height - 100 // 위치 조정
+        tabBar.frame = tabFrame
     }
     
     // MARK: - 커스텀 탭바 적용
     private func setupCustomTabBar() {
         let customTabBar = CustomTabBar()
         self.setValue(customTabBar, forKey: "tabBar")
-        tabBar.tintColor = .systemBlue
-        tabBar.unselectedItemTintColor = .gray
+        tabBar.tintColor = UIColor.yellow100
+        tabBar.unselectedItemTintColor = UIColor.gray400
     }
     
     // MARK: - 탭 연결 및 뷰컨트롤러 설정
     private func setupViewControllers() {
         let firstVC = UIViewController()
         firstVC.view.backgroundColor = .white
-        firstVC.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "calendar"), tag: 0)
+        let calendar = UIImage(systemName: "calendar")?.resize(by: 1.7)
+        firstVC.tabBarItem = UITabBarItem(title: "", image: calendar, tag: 0)
+        firstVC.tabBarItem.imageInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: -20)
+        
+        let floatingVC = UIViewController()
+        floatingVC.view.backgroundColor = .white
+        floatingVC.tabBarItem = UITabBarItem(title: "", image: UIImage(), tag: 1)
         
         let secondVC = UIViewController()
         secondVC.view.backgroundColor = .white
-        secondVC.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "person.fill"), tag: 1)
+        let person = UIImage(systemName: "person.fill")?.resize(by: 1.7)
+        secondVC.tabBarItem = UITabBarItem(title: "", image: person, tag: 2)
+        secondVC.tabBarItem.imageInsets = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 20)
         
-        self.viewControllers = [firstVC, secondVC]
+        self.viewControllers = [firstVC, floatingVC, secondVC]
     }
 
     // MARK: - SnapKit을 사용하여 중앙 플로팅 버튼 추가
     private func setupFloatingButton() {
-        floatingButton.setImage(UIImage(named: "home"), for: .normal)
+        floatingButton.setImage(UIImage(named: "home")?.withRenderingMode(.alwaysOriginal), for: .normal)
         floatingButton.tintColor = .white
-        floatingButton.backgroundColor = .systemBlue
+        floatingButton.backgroundColor = .clear
         floatingButton.layer.cornerRadius = 31.5
         floatingButton.layer.shadowColor = UIColor.black.cgColor
         floatingButton.layer.shadowOpacity = 0.3
         floatingButton.layer.shadowOffset = CGSize(width: 0, height: 4)
         floatingButton.layer.shadowRadius = 5
         floatingButton.addTarget(self, action: #selector(floatingButtonTapped), for: .touchUpInside)
-        
-        // SnapKit을 사용하여 탭바에 버튼 추가 및 정렬
+    
         tabBar.addSubview(floatingButton)
         floatingButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview() // 탭바의 중앙
@@ -63,9 +82,6 @@ class BaseTabBarController: UITabBarController {
     }
     
     @objc private func floatingButtonTapped() {
-        print("Floating Button Tapped!")
-        let alert = UIAlertController(title: "플로팅 버튼", message: "버튼이 눌렸습니다!", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default))
-        present(alert, animated: true)
+        selectedIndex = 1
     }
 }
