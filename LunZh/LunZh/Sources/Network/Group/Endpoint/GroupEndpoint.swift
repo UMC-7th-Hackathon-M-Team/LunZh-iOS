@@ -9,7 +9,7 @@ import Foundation
 import Moya
 
 public enum GroupEndpoints {
-    case postGroup(email: String)
+    case postGroup(email: String, name: String)
     case exitGroup(memberId: Int)
     case joinGroup(memberId: Int, teamCode: Int)
 }
@@ -24,12 +24,12 @@ extension GroupEndpoints: TargetType {
     
     public  var path: String {
         switch self {
-        case .postGroup(let email):
-            return "/"
+        case .postGroup(let email, let name):
+            return ""
         case .exitGroup(let memberId):
             return "/exit"
         case .joinGroup(let memberId, let teamCode):
-            return "/"
+            return ""
         default:
             return ""
         }
@@ -44,9 +44,9 @@ extension GroupEndpoints: TargetType {
     
     public var task: Moya.Task {
         switch self {
-        case .postGroup(let email):
+        case .postGroup(let email, let name):
             return .requestParameters(
-                parameters: ["email": email],  // 쿼리 파라미터
+                parameters: ["email": email, "name": name],  // 쿼리 파라미터
                 encoding: URLEncoding.queryString
             )
         case .exitGroup(let memberId):

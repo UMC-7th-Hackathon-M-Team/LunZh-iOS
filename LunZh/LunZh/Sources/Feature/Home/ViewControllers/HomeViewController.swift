@@ -48,14 +48,14 @@ class HomeViewController: UIViewController {
     }
     
     private lazy var notJoinGroupView = NotJoinGroupView().then {
-        $0.isHidden = true
+        $0.isHidden = false
     }
     
     private lazy var enterGroupBtn = HomeCustomButton(title: "그레이스",
                                                 subTitle: "그룹방에 입장하기",
                                                 imageColor: UIColor.gray700,
                                                     backgroundColor: UIColor.yellow60).then {
-        $0.isHidden = false
+        $0.isHidden = true
     }
     
     func setupGestures() {
@@ -64,23 +64,23 @@ class HomeViewController: UIViewController {
         notJoinGroupView.makeGroupBtn.isUserInteractionEnabled = true
         
         let btnTapGesture2 = UITapGestureRecognizer(target: self, action: #selector(joinGroupBtnTapped))
-        notJoinGroupView.makeGroupBtn.addGestureRecognizer(btnTapGesture2)
-        notJoinGroupView.makeGroupBtn.isUserInteractionEnabled = true
+        notJoinGroupView.joinGroupBtn.addGestureRecognizer(btnTapGesture2)
+        notJoinGroupView.joinGroupBtn.isUserInteractionEnabled = true
         
         let btnTapGesture3 = UITapGestureRecognizer(target: self, action: #selector(enterGroupBtnTapped))
         enterGroupBtn.addGestureRecognizer(btnTapGesture3)
         enterGroupBtn.isUserInteractionEnabled = true
     }
     
-    @objc
-    private func makeGroupBtnTapped() {
-        let vc = ()
-        navigationController?.pushViewController(settingsVC, animated: false)
+    @objc private func makeGroupBtnTapped() {
+        let groupCreateVC = GroupCreateViewController()
+        navigationController?.pushViewController(groupCreateVC, animated: false)
+        print("makeGroupBtn tapped")
     }
     
-    @objc
-    private func joinGroupBtnTapped() {
-        
+    @objc private func joinGroupBtnTapped() {
+        let groupCodeInputDialogVC = GroupCodeInputDialogViewController()
+        navigationController?.pushViewController(groupCodeInputDialogVC, animated: false)
     }
     
     @objc
@@ -102,6 +102,7 @@ class HomeViewController: UIViewController {
         setupConstraints()
         configureCollectionView()
         setupTimers()
+        setupGestures()
     }
     
     // ✅ MARK: - 뷰 추가 (addSubview)
