@@ -13,6 +13,7 @@ import Then
 class NicknameViewController: UIViewController {
 
     let navigationBarManager = NavigationBarManager()
+    var vc: UIViewController? = nil
     
     let descriptionLabel = UILabel().then {
         $0.text = "닉네임을\n입력해 주세요!"
@@ -90,18 +91,19 @@ class NicknameViewController: UIViewController {
     }
     
     @objc private func nextButtonTapped() {
-        let vc = MyTasteViewController()
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc!, animated: true)
     }
     
     @objc func nicknameValidate() {
         var isValid: Bool = false
         if let nickname = nicknameTextField.text, !nickname.isEmpty {
             isValid = true
+            vc = MyTasteViewController(nickname: nickname)
         } else {
             isValid = false
         }
         nextButton.isEnabled = isValid
         nextButton.isEnabled(isEnabled: isValid)
+        
     }
 }

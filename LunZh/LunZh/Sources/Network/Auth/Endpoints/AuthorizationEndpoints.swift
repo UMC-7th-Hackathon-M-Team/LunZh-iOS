@@ -6,6 +6,7 @@ public enum AuthorizationEndpoints {
     case postLogin(email: String)
     case postLogout
     case postDelete
+    case postMemberInfo(memberId: Int, nickName: String, preferFood: [String])
 }
 
 extension AuthorizationEndpoints: TargetType {
@@ -24,6 +25,8 @@ extension AuthorizationEndpoints: TargetType {
             return "/login"
         case .postLogout:
             return "/logout"
+        case .postMemberInfo(let memberId, let nickName, let preferFood):
+            return "/members"
         }
     }
     
@@ -39,6 +42,11 @@ extension AuthorizationEndpoints: TargetType {
         case .postLogin(let email):
             return .requestParameters(
                 parameters: ["email": email],  // 쿼리 파라미터
+                encoding: URLEncoding.queryString
+            )
+        case .postMemberInfo(let memberId, let nickName, let preferFood):
+            return .requestParameters(
+                parameters: ["memberId": memberId, "nickName": nickName, "preferFood": preferFood],  // 쿼리 파라미터
                 encoding: URLEncoding.queryString
             )
         case .postLogout, .postDelete:

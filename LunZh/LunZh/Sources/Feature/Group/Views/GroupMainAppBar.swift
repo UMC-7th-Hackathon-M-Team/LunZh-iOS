@@ -29,7 +29,7 @@ class GroupMainAppBar: UIView {
     // MARK: - Property
     
     // 앱바 로고
-    private lazy var backBtn = UIButton().then {
+    public lazy var backBtn = UIButton().then {
         $0.setImage(UIImage(named: "groupBackBtn"), for: .normal)
         $0.tintColor = .gray400
     }

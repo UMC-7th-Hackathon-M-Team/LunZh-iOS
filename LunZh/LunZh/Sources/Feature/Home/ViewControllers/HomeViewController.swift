@@ -104,28 +104,29 @@ class HomeViewController: UIViewController {
         notJoinGroupView.makeGroupBtn.isUserInteractionEnabled = true
         
         let btnTapGesture2 = UITapGestureRecognizer(target: self, action: #selector(joinGroupBtnTapped))
-        notJoinGroupView.makeGroupBtn.addGestureRecognizer(btnTapGesture2)
-        notJoinGroupView.makeGroupBtn.isUserInteractionEnabled = true
+        notJoinGroupView.joinGroupBtn.addGestureRecognizer(btnTapGesture2)
+        notJoinGroupView.joinGroupBtn.isUserInteractionEnabled = true
         
         let btnTapGesture3 = UITapGestureRecognizer(target: self, action: #selector(enterGroupBtnTapped))
         enterGroupBtn.addGestureRecognizer(btnTapGesture3)
         enterGroupBtn.isUserInteractionEnabled = true
     }
     
-    @objc
-    private func makeGroupBtnTapped() {
-//        let vc = ()
-//        navigationController?.pushViewController(settingsVC, animated: false)
+    @objc private func makeGroupBtnTapped() {
+        let groupCreateVC = GroupCreateViewController()
+        navigationController?.pushViewController(groupCreateVC, animated: false)
+        print("makeGroupBtn tapped")
     }
     
-    @objc
-    private func joinGroupBtnTapped() {
-        
+    @objc private func joinGroupBtnTapped() {
+        let groupCodeInputDialogVC = GroupCodeInputDialogViewController()
+        navigationController?.pushViewController(groupCodeInputDialogVC, animated: false)
     }
     
     @objc
     private func enterGroupBtnTapped() {
-        
+        let groupMainVC = GroupMainViewController()
+        navigationController?.pushViewController(groupMainVC, animated: false)
     }
     
     // 데이터 및 타이머 변수
@@ -141,6 +142,7 @@ class HomeViewController: UIViewController {
         setupConstraints()
         configureCollectionView()
         setupTimers()
+        setupGestures()
     }
     
     private func setupViews() {

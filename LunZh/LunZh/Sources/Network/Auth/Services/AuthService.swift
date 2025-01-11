@@ -62,8 +62,17 @@ public final class AuthService : NetworkManager {
     }
     
     
-    /// 멤버 정보 전송 API
-//    public func sendMemberInfo(data: MemberRequestDTO, completion: @escaping (Result<MemberResponseDTO, NetworkError>) -> Void) {
-//        request(target: .patchMemberInfo(data: data), decodingType: MemberResponseDTO.self, completion: completion)
-//    }
+    /// 자체 로그인 API
+    public func postMemberInfo(memberId: Int, nickName: String, preferFood: [String], completion: @escaping (Result<Void, NetworkError>) -> Void) {
+        provider.request(.postMemberInfo(memberId: memberId, nickName: nickName, preferFood: preferFood))
+        { result in
+            switch result {
+            case .success(let response):
+                completion(.success(()))
+            case .failure(let error):
+                let networkError = self.handleNetworkError(error)
+                completion(.failure(networkError))
+            }
+        }
+    }
 }

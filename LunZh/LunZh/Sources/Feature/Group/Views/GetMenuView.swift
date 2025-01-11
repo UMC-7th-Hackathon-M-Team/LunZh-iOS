@@ -29,7 +29,7 @@ class GetMenuView: UIView {
     
     private lazy var title2 = makeLabel("입력해 주세요")
     
-    private lazy var menuInputBox = PaddedTextField(padding: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16), placeholder: "직접 입력하세요.")
+    public lazy var menuInputBox = PaddedTextField(padding: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16), placeholder: "직접 입력하세요.")
     
     public lazy var menuGameStartBtn = CustomButton(title: "시작하기", titleColor: .gray800, isEnabled: true)
     // MARK: - Function
