@@ -11,12 +11,15 @@ import SnapKit
 import Then
 
 class MyTasteViewController: UIViewController {
-
+    
     let navigationBarManager = NavigationBarManager()
+    let authManager = AuthService()
     
     let cellData = Constants.TasteList
     var selectedItems: [String] = []
-
+    
+    let nickname: String
+    
     let descriptionLabel = UILabel().then {
         $0.text = "관심 있는 음식을\n선택해 주세요!"
         $0.font = UIFont.ptdBoldFont(ofSize: 24)
@@ -24,19 +27,28 @@ class MyTasteViewController: UIViewController {
     }
     
     lazy var tasteKindCollectionView = UICollectionView(frame: .zero, collectionViewLayout: LeftAlignedCollectionViewFlowLayout().then {
-            $0.minimumInteritemSpacing = 8
-            $0.minimumLineSpacing = 8
-        }).then {
-            $0.register(TasteCollectionViewCell.self, forCellWithReuseIdentifier: TasteCollectionViewCell.identifier)
-            $0.backgroundColor = .clear
-            $0.isScrollEnabled = false
-            $0.allowsMultipleSelection = true
-            $0.clipsToBounds = false
-        }
+        $0.minimumInteritemSpacing = 8
+        $0.minimumLineSpacing = 8
+    }).then {
+        $0.register(TasteCollectionViewCell.self, forCellWithReuseIdentifier: TasteCollectionViewCell.identifier)
+        $0.backgroundColor = .clear
+        $0.isScrollEnabled = false
+        $0.allowsMultipleSelection = true
+        $0.clipsToBounds = false
+    }
     
     let nextButton = CustomButton(title: "다음", titleColor: .gray500, isEnabled: false)
     
     // MARK: - LifeCycle
+    init(nickname: String) {
+        self.nickname = nickname
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
@@ -51,14 +63,14 @@ class MyTasteViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = Constants.Colors.white
         tasteKindCollectionView.dataSource = self
-            tasteKindCollectionView.delegate = self
+        tasteKindCollectionView.delegate = self
         setupUI()
         setupConstraints()
         setupActions()
         setupNavigationBar()
     }
     
-
+    
     // MARK: - setup
     
     func setupUI() {
@@ -85,18 +97,18 @@ class MyTasteViewController: UIViewController {
     
     func setupActions(){
         nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
-//        nicknameTextField.addTarget(self, action: #selector(nicknameValidate), for: .editingChanged)
+        //        nicknameTextField.addTarget(self, action: #selector(nicknameValidate), for: .editingChanged)
     }
     
-     private func setupNavigationBar() {
-         navigationBarManager.setLogoTitle(to: navigationItem, logo: true)
-         navigationBarManager.addBackButton(
-             to: navigationItem,
-             target: self,
-             action: #selector(backButtonTapped),
-             tintColor: Constants.Colors.gray400!
-         )
-     }
+    private func setupNavigationBar() {
+        navigationBarManager.setLogoTitle(to: navigationItem, logo: true)
+        navigationBarManager.addBackButton(
+            to: navigationItem,
+            target: self,
+            action: #selector(backButtonTapped),
+            tintColor: Constants.Colors.gray400!
+        )
+    }
     
     // MARK: - func
     @objc private func backButtonTapped() {
@@ -104,10 +116,20 @@ class MyTasteViewController: UIViewController {
     }
     
     @objc private func nextButtonTapped() {
-        let vc = BaseTabBarController()
-        navigationController?.pushViewController(vc, animated: true)
+        self.authManager.postMemberInfo(memberId: 8, nickName: nickname, preferFood: selectedItems){ [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                print("멤버 정보 fetch")
+                let vc = BaseTabBarController()
+                self.navigationController?.pushViewController(vc, animated: true)
+            case .failure(let error):
+                print(error)
+            }
+            
+        }
+        
     }
-
 }
 
 extension MyTasteViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {

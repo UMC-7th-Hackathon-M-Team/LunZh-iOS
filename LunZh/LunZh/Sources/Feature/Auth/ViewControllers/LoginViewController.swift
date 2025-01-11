@@ -147,10 +147,6 @@ class LoginViewController: UIViewController {
             case .success(let response):
                 print("카카오 로그인 성공")
                 saveUserId(userId: response.id)
-//                Task {
-//                    // userID저장
-//                    await UserDataManager.shared.createUser(userId: response.id)
-//                }
                 self.goToNextView(response.isFirstLogin)
             case .failure(let error):
                 print(error)
@@ -159,7 +155,7 @@ class LoginViewController: UIViewController {
     }
     
     func goToNextView(_ isFirstLogin: Bool) {
-        if isFirstLogin {
+        if !isFirstLogin {
             let enterNicknameTestViewController = NicknameViewController()
             navigationController?.pushViewController(enterNicknameTestViewController, animated: true)
         } else {
