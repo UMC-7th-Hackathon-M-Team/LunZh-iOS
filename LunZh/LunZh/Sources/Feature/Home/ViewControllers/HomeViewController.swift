@@ -49,14 +49,14 @@ class HomeViewController: UIViewController {
     }
     
     private lazy var notJoinGroupView = NotJoinGroupView().then {
-        $0.isHidden = true
+        $0.isHidden = false
     }
     
     private lazy var enterGroupBtn = HomeCustomButton(title: "그레이스",
                                                 subTitle: "그룹방에 입장하기",
                                                 imageColor: UIColor.gray700,
                                                     backgroundColor: UIColor.yellow60).then {
-        $0.isHidden = false
+        $0.isHidden = true
     }
     
     func setupGestures() {

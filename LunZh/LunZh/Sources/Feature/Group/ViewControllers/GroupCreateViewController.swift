@@ -61,7 +61,7 @@ class GroupCreateViewController: UIViewController {
     }
     
     @objc private func createButtonTapped(){
-        self.groupService.postGroup(email: "junho8917@hanmail.net", name:self.groupCreateView.groupNameInputBox.text!) { [weak self] result in
+        self.groupService.postGroup(email: "htkdghks11@naver.com", name:self.groupCreateView.groupNameInputBox.text!) { [weak self] result in
             guard let self = self else { return }
                         
             switch result {

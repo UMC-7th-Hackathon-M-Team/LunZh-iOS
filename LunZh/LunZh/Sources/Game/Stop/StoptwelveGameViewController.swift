@@ -26,6 +26,15 @@ class StoptwelveGameViewController: UIViewController {
     var teamId: Int? {
         UserDefaults.standard.object(forKey: "teamId") as? Int
     }
+    
+    var gameNumber: Int? {
+        UserDefaults.standard.object(forKey: "gameNumber") as? Int
+    }
+    
+    var foodName: String? {
+        UserDefaults.standard.object(forKey: "foodName") as? String
+    }
+    
     // MARK: - Lifecycle
     override func loadView() {
         view = gameView
@@ -94,8 +103,16 @@ class StoptwelveGameViewController: UIViewController {
     }
     
     @objc private func dismissView() {
+        var resultNum = ""
+        if gameNumber == 1{
+            resultNum = "A"
+        }else if gameNumber == 2{
+            resultNum = "B"
+        }else{
+            resultNum = "C"
+        }
         // 내가 보낼 데이터를 DTO로 만듬
-        let myGameDTO = self.gameService.makeResultDTO(gameId: <#T##String#>, memberFood: <#T##String#>, result: Int(timeDifference!))
+        let myGameDTO = self.gameService.makeResultDTO(gameId: resultNum, memberFood: foodName!, result: Int(timeDifference!))
         
         //서버로 데이터 전송
         self.gameService.gameResult(teamId: teamId!, memberId: userId!, data: myGameDTO) { [weak self] result in

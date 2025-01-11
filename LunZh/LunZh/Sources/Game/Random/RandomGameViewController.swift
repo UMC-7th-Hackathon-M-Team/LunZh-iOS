@@ -85,20 +85,6 @@ class RandomGameViewController: UIViewController {
     }
 
     @objc private func handleScreenTap() {
-        // 내가 보낼 데이터를 DTO로 만듬
-        let myGameDTO = self.gameService.makeResultDTO(gameId: <#T##String#>, memberFood: <#T##String#>, result: 0)
-        
-        //서버로 데이터 전송
-        self.gameService.gameResult(teamId: teamId!, memberId: userId!, data: myGameDTO) { [weak self] result in
-            guard let self = self else { return }
-
-            switch result {
-            case .success(let response):
-                print(response)
-            case .failure(let error):
-                print(error)
-            }
-        }
         // 화면 터치 시 화면 닫기
         self.dismiss(animated: true, completion: nil)
     }

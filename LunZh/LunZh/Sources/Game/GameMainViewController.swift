@@ -30,14 +30,16 @@ class GameMainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let gameNumber = gameNumber {
-            print("받아온 게임 넘버는 \(gameNumber)입니다")
-            kindOfGame = gameNumber
+        if let gamenumber = gameNumber {
+            gameNumber = gamenumber
+            UserDefaults.standard.set(gamenumber, forKey: "gameNumber")
         }
-        if let menu = foodName{
-            print("받아온 메뉴는 \(menu)입니다")
-            
+        
+        if let foodname = foodName {
+            foodName = foodname
+            UserDefaults.standard.set(foodname, forKey: "foodName")
         }
+        
         setupNavigationBar()
         setupActions()
         updateTextForKindOfGame() // 초기 텍스트 설정
@@ -76,9 +78,22 @@ class GameMainViewController: UIViewController {
 //        kindOfGame = (kindOfGame == 2) ? 3 : 2
         
         // 게임 화면으로 이동
-        let gameVC = RandomGameViewController()
-         gameVC.modalPresentationStyle = .fullScreen
-         present(gameVC, animated: true)
+        var gameVC1 = GameResultWaitingViewController()
+        var gameVC2 = FakerGameViewController()
+        var gameVC3 = StoptwelveGameViewController()
+    
+
+        if gameNumber == 1 {
+            navigationController?.pushViewController(gameVC1, animated: true)
+            
+        } else if gameNumber == 2 {
+            gameVC2.modalPresentationStyle = .fullScreen
+            present(gameVC2, animated: true)
+        } else {
+            gameVC3.modalPresentationStyle = .fullScreen
+            present(gameVC3, animated: true)
+        }
+        
     }
     
     @objc private func backButtonTapped() {

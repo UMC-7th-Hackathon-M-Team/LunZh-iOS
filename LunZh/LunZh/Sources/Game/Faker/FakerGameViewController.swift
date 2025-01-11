@@ -28,6 +28,14 @@ class FakerGameViewController: UIViewController {
     var teamId: Int? {
         UserDefaults.standard.object(forKey: "teamId") as? Int
     }
+    
+    var gameNumber: Int? {
+        UserDefaults.standard.object(forKey: "gameNumber") as? Int
+    }
+    
+    var foodName: String? {
+        UserDefaults.standard.object(forKey: "foodName") as? String
+    }
 
     
     // MARK: - Lifecycle
@@ -107,10 +115,18 @@ class FakerGameViewController: UIViewController {
     
     @objc private func restartGame() {
         // 내가 보낼 데이터를 DTO로 만듬
-        let myGameDTO = self.gameService.makeResultDTO(gameId: <#T##String#>, memberFood: <#T##String#>, result: Int(reactionTime))
+        var resultNum = ""
+        if gameNumber == 1{
+            resultNum = "A"
+        }else if gameNumber == 2{
+            resultNum = "B"
+        }else{
+            resultNum = "C"
+        }
+        let myGameDTO = self.gameService.makeResultDTO(gameId: resultNum, memberFood: foodName!, result: Int(reactionTime))
         
         // 서버로 데이터 전송
-        self.gameService.gameResult(teamId: teamId, memberId: userId, data: myGameDTO) { [weak self] result in
+        self.gameService.gameResult(teamId: teamId!, memberId: userId!, data: myGameDTO) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
