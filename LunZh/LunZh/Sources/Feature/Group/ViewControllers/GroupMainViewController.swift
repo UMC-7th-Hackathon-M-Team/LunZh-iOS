@@ -6,27 +6,33 @@
 //
 
 import UIKit
-
+import SnapKit
+import Then
 class GroupMainViewController: UIViewController {
-    private lazy var groupMainView: GroupMainView = {
-        let groupMainView = GroupMainView()
-        groupMainView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return groupMainView
-    }()
+    private lazy var groupMainView = GroupMainView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.view = groupMainView
         view.backgroundColor = .white
         
-        groupMainView.groupMainAppBar.sharingBtn.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        groupMainView.groupMainAppBar.sharingBtn.addTarget(self, action: #selector(sharingTapped), for: .touchUpInside)
+        groupMainView.groupMainBody.gameStartBtn.addTarget(self, action: #selector(gameStartTapped), for: .touchUpInside)
     }
     
-    @objc func buttonTapped() {
-        print("sharingBtn tapped")
-        debugPrint("Button is tapped")
+    @objc func sharingTapped(){
+        let customDialogVC = CustomDialogViewController()
+        customDialogVC.modalPresentationStyle = .overFullScreen
+        present(customDialogVC, animated: false, completion: nil)
     }
+    
+    @objc func gameStartTapped(){
+        let getMenuVC = GetMenuViewController()
+        
+        getMenuVC.modalPresentationStyle = .fullScreen
+        present(getMenuVC, animated: false, completion: nil)
+    }
+
+
 
 }

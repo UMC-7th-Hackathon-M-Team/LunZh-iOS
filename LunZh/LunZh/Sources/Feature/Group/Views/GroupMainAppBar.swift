@@ -35,7 +35,10 @@ class GroupMainAppBar: UIView {
     }
     
     // 앱바 공유 버튼
-    public lazy var sharingBtn = makeButton("공유")
+    var sharingBtn = UIButton().then{
+        $0.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
+        $0.setTitleColor(.black, for: .normal)
+    }
     
     // 앱바 그룹탈퇴 버튼
     public lazy var exitBtn = makeButton("나가기")

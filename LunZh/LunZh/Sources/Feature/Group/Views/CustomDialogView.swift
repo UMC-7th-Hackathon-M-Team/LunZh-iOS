@@ -27,8 +27,8 @@ class CustomDialogView: UIView {
     // MARK: - Property
     
     // 컨테이너
-    private lazy var containerView = UIView().then{
-        $0.backgroundColor = .white
+    public lazy var containerView = UIView().then{
+        $0.backgroundColor = .red
         $0.layer.cornerRadius = 10
         $0.layer.masksToBounds = true
     }
@@ -38,6 +38,7 @@ class CustomDialogView: UIView {
         $0.text = "제목"
         $0.font = .systemFont(ofSize: 24, weight: .bold)
         $0.textColor = .black
+        $0.textAlignment = .center
     }
     
     // 내용
@@ -45,6 +46,7 @@ class CustomDialogView: UIView {
         $0.text = "내용"
         $0.font = .systemFont(ofSize: 18, weight: .medium)
         $0.textColor = .black
+        $0.textAlignment = .center
     }
     
     // 버튼
@@ -80,8 +82,13 @@ class CustomDialogView: UIView {
     
     private func constraints(){
         
+        dialogStack.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
         containerView.snp.makeConstraints{
-            $0.edges.equalToSuperview().offset(24)
+            $0.center.equalToSuperview()
+            $0.height.width.equalTo(200)
         }
     }
     
