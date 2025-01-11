@@ -107,35 +107,34 @@ class LoginViewController: UIViewController {
     
     // MARK: - Actions
     @objc private func kakaoButtonTapped() {
-//        self.kakaoAuthVM.kakaoLogin { success in
-//            if success {
-//                UserApi.shared.me { (user, error) in
-//                    if let error = error {
-//                        print("에러 발생: \(error.localizedDescription)")
-//                        return
-//                    }
-//                    
-//                    guard let userID = user?.id else {
-//                        print("user id가 nil입니다.")
-//                        return
-//                    }
-//                    guard let userEmail = user?.kakaoAccount?.email else {
-//                        print("userEmail가 nil입니다.")
-//                        return
-//                    }
-//                    guard let userProfile = user?.kakaoAccount?.profile?.profileImageUrl else {
-//                        print("userProfile이 nil입니다.")
-//                        return
-//                    }
-//                    UserDefaults.standard.set(userProfile, forKey: "userProfile")
-//                }
-//            } else {
-//                print("카카오 회원가입 실패")
-//            }
-//        }
-        print("kakaoTapped")
-        let vc = NicknameViewController()
-        navigationController?.pushViewController(vc, animated: true)
+        self.kakaoAuthVM.kakaoLogin { success in
+            if success {
+                UserApi.shared.me { (user, error) in
+                    if let error = error {
+                        print("에러 발생: \(error.localizedDescription)")
+                        return
+                    }
+                    
+                    guard let userID = user?.id else {
+                        print("user id가 nil입니다.")
+                        return
+                    }
+                    guard let userEmail = user?.kakaoAccount?.email else {
+                        print("userEmail가 nil입니다.")
+                        return
+                    }
+                    guard let userProfile = user?.kakaoAccount?.profile?.profileImageUrl else {
+                        print("userProfile이 nil입니다.")
+                        return
+                    }
+                    UserDefaults.standard.set(userProfile, forKey: "userProfile")
+                }
+            } else {
+                print("카카오 회원가입 실패")
+            }
+        }
+//        let vc = NicknameViewController()
+//        navigationController?.pushViewController(vc, animated: true)
     }
     
     
@@ -158,6 +157,7 @@ class LoginViewController: UIViewController {
 //            }
 //        }
     }
+    
     func goToNextView(_ isFirstLogin: Bool) {
 //        if isFirstLogin {
 //            let enterTasteTestViewController = SplashVC()
