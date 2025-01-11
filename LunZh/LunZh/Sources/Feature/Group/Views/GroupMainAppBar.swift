@@ -29,24 +29,21 @@ class GroupMainAppBar: UIView {
     // MARK: - Property
     
     // 앱바 로고
-    private lazy var appBarLogo = UIImageView().then{
-        $0.image = UIImage(systemName: "apple.logo")?.withRenderingMode(.alwaysOriginal)
-        $0.contentMode = .scaleAspectFit
+    private lazy var backBtn = UIButton().then {
+        $0.setImage(UIImage(named: "groupBackBtn"), for: .normal)
+        $0.tintColor = .gray400
     }
     
     // 앱바 공유 버튼
-    var sharingBtn = UIButton().then{
-        $0.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
-        $0.setTitleColor(.black, for: .normal)
-    }
+    public lazy var sharingBtn = makeButton("share")
     
     // 앱바 그룹탈퇴 버튼
-    public lazy var exitBtn = makeButton("나가기")
+    public lazy var exitBtn = makeButton("out")
     
     // MARK: - Stack
     
     // 앱바 버튼 모음
-    private lazy var appBarButtons = makeStackView(axis: .horizontal, spacing: 10)
+    private lazy var appBarButtons = makeStackView(axis: .horizontal, spacing: 30)
     
     
     
@@ -62,9 +59,8 @@ class GroupMainAppBar: UIView {
     
     private func makeButton(_ name: String) -> UIButton{
         let button = UIButton()
-        button.setTitle(name, for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 12)
+        button.setImage(UIImage(named: name), for: .normal)
+        button.tintColor = .gray500
         return button
     }
     
@@ -80,18 +76,23 @@ class GroupMainAppBar: UIView {
     }
     
     private func addComponents(){
-        [appBarLogo, appBarButtons].forEach(self.addSubview)
+        [backBtn, appBarButtons].forEach(self.addSubview)
     }
     
     private func constraints(){
         
-        appBarLogo.snp.makeConstraints{
+        backBtn.snp.makeConstraints{
             $0.top.equalToSuperview().offset(24)
             $0.left.equalToSuperview().offset(24)
             
         }
         sharingBtn.snp.makeConstraints {
-            $0.width.height.equalTo(40)
+            $0.width.height.equalTo(24)
+            
+        }
+        
+        exitBtn.snp.makeConstraints {
+            $0.width.height.equalTo(24)
             
         }
         appBarButtons.snp.makeConstraints {

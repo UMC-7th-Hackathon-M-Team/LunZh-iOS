@@ -33,12 +33,6 @@ class GameResultView: UIView {
         $0.font = UIFont.ptdBoldFont(ofSize: 24)
     }
     
-    private lazy var menuName = UILabel().then{
-        $0.text = "짜장면"
-        $0.textColor = Constants.Colors.yellow100
-        $0.font = UIFont.ptdBoldFont(ofSize: 24)
-    }
-    
     private lazy var title2: UILabel = {
         let label = UILabel()
         let fullText = "짜장면 입니다!"
@@ -48,11 +42,12 @@ class GameResultView: UIView {
         if let firstWord = components.first, let range = fullText.range(of: firstWord) {
             let nsRange = NSRange(range, in: fullText)
             attributedString.addAttribute(.foregroundColor, value: Constants.Colors.yellow100!, range: nsRange)
-            attributedString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 24), range: nsRange)
+            attributedString.addAttribute(.font, value: UIFont.ptdBoldFont(ofSize: 24), range: nsRange)
         }
         
         label.attributedText = attributedString
-        label.font = UIFont.boldSystemFont(ofSize: 24)
+        label.textColor = .black
+        label.font = UIFont.ptdBoldFont(ofSize: 24)
         return label
     }()
    

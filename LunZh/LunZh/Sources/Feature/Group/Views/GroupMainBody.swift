@@ -24,13 +24,39 @@ class GroupMainBody: UIView {
     // MARK: - Property
     
     // 그룹명
-    private lazy var groupNameLabel = UILabel().then{
-        $0.text = "그룹: 그레이스"
-        $0.textColor = .black
-        $0.font = UIFont.ptdBoldFont(ofSize: 18)
+    private lazy var title2 = UILabel().then{
+        $0.text = "함께하고 있어요!"
+        $0.textColor = .gray800
+        $0.font = UIFont.ptdBoldFont(ofSize: 24)
     }
+    
+    private lazy var title1: UILabel = {
+        let label = UILabel()
+        let fullText = "그레이스에"
+        let attributedString = NSMutableAttributedString(string: fullText)
+        
+        // 마지막 글자의 범위를 계산합니다.
+        let lastCharIndex = fullText.index(before: fullText.endIndex)
+        let range = lastCharIndex..<fullText.endIndex
+        let nsRange = NSRange(range, in: fullText)
+        
+        // 마지막 글자에 검은색과 볼드 폰트 적용
+        attributedString.addAttribute(.foregroundColor, value: Constants.Colors.gray800!, range: nsRange)
+        attributedString.addAttribute(.font, value: UIFont.ptdBoldFont(ofSize: 24), range: nsRange)
+        
+        label.attributedText = attributedString
+        label.textColor = .yellow100
+        label.font = UIFont.ptdBoldFont(ofSize: 24) // 전체 텍스트 기본 폰트
+        return label
+    }()
+
+    
+    
     // 게임시작 버튼
-    public lazy var gameStartBtn = makeButton("게임시작")
+    public lazy var gameStartBtn = UIButton().then{
+        $0.setImage(UIImage(named: "gameStartBtn"), for: .normal)
+        $0.imageView?.contentMode = .scaleAspectFit
+    }
     
     // MARK: - Stack
     
@@ -66,19 +92,25 @@ class GroupMainBody: UIView {
 //    }
     
     private func addComponents(){
-        [groupNameLabel, gameStartBtn].forEach(self.addSubview)
+        [title1, title2, gameStartBtn].forEach(self.addSubview)
     }
     
     private func constraints(){
+
         
+        title1.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(40)
+            $0.left.equalToSuperview().offset(20)
+        }
         
-        groupNameLabel.snp.makeConstraints{
-            $0.top.equalToSuperview().offset(20)
-            $0.centerX.equalToSuperview()
+        title2.snp.makeConstraints{
+            $0.top.equalTo(title1.snp.bottom)
+            $0.left.equalToSuperview().offset(20)
         }
         
         gameStartBtn.snp.makeConstraints{
-            $0.center.equalToSuperview()
+            $0.top.equalTo(title2.snp.bottom).offset(95)
+            $0.horizontalEdges.equalToSuperview().inset(70)
         }
     }
 }

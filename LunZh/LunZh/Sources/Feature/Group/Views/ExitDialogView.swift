@@ -1,15 +1,13 @@
 //
-//  CustomDialogView.swift
+//  ExitDialogView.swift
 //  LunZh
 //
-//  Created by 허준호 on 1/11/25.
+//  Created by 허준호 on 1/12/25.
 //
 
 import UIKit
-import Then
-import SnapKit
 
-class CustomDialogView: UIView {
+class ExitDialogView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -40,31 +38,16 @@ class CustomDialogView: UIView {
     
     // 제목
     private lazy var title = UILabel().then{
-        $0.text = "친구와 함께해요!"
+        $0.text = "정말 나가시겠어요?"
         $0.font = UIFont.ptdBoldFont(ofSize: 24)
         $0.textColor = .gray800
         $0.textAlignment = .center
     }
-    
-    // 부제목
-    private lazy var subTitle = UILabel().then{
-        $0.text = "친구에게 코드를 공유해보세요"
-        $0.font = UIFont.ptdMediumFont(ofSize: 16)
-        $0.textColor = .gray500
-        $0.textAlignment = .center
-    }
-    
-    // 내용
-    private lazy var sharingCode = UILabel().then{
-        $0.text = "215789"
-        $0.font = .ptdBoldFont(ofSize: 24)
-        $0.textColor = Constants.Colors.yellow100
-        $0.textAlignment = .center
-    }
+
     
     // 버튼
-    private lazy var confirmBtn = CustomButton().then {
-        $0.configure(title: "확인", titleColor: UIColor.white, isEnabled: true)
+    private lazy var exitBtn = CustomButton().then {
+        $0.configure(title: "나가기", titleColor: UIColor.white, isEnabled: true)
     }
     // MARK: - Stack
     private lazy var dialogStack = makeStackView()
@@ -86,7 +69,7 @@ class CustomDialogView: UIView {
     
     private func addComponents(){
         //containerView.addSubview(dialogStack)
-        [cancelBtn, title, subTitle, sharingCode, confirmBtn].forEach(containerView.addSubview)
+        [cancelBtn, title, exitBtn].forEach(containerView.addSubview)
         [containerView].forEach(self.addSubview)
     }
     
@@ -101,27 +84,17 @@ class CustomDialogView: UIView {
             $0.top.equalToSuperview().offset(45)
             $0.horizontalEdges.equalToSuperview()
         }
+
         
-        subTitle.snp.makeConstraints{
-            $0.top.equalTo(title.snp.bottom).offset(12)
-            $0.horizontalEdges.equalToSuperview()
-        }
-        
-        sharingCode.snp.makeConstraints{
-            $0.top.equalTo(subTitle.snp.bottom).offset(45)
-            $0.horizontalEdges.equalToSuperview()
-        }
-        
-        confirmBtn.snp.makeConstraints{
-            $0.top.equalTo(sharingCode.snp.bottom).offset(57)
+        exitBtn.snp.makeConstraints{
+            $0.top.equalTo(title.snp.bottom).offset(48)
             $0.horizontalEdges.bottom.equalToSuperview().inset(20)
             
         }
         containerView.snp.makeConstraints{
             $0.center.equalToSuperview()
-            $0.height.equalTo(324)
+            $0.height.equalTo(212)
             $0.width.equalTo(335)
         }
     }
-    
 }

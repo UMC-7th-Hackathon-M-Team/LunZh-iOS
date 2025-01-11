@@ -29,24 +29,16 @@ class GetMenuView: UIView {
     
     private lazy var title2 = makeLabel("입력해 주세요")
     
-    private lazy var menuInputBox = UITextField().then{
-        $0.placeholder = "메뉴를 입력해주세요"
-        $0.textColor = .lightGray
-        $0.leftViewMode = .always
-        $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 1))
-        $0.backgroundColor = .yellow
-        $0.layer.cornerRadius = 5
-        $0.layer.masksToBounds = true
-        $0.font = .systemFont(ofSize: 15)
-        
-    }
+    private lazy var menuInputBox = PaddedTextField(padding: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16), placeholder: "직접 입력하세요.")
+    
+    public lazy var menuGameStartBtn = CustomButton(title: "시작하기", titleColor: .gray800, isEnabled: true)
     // MARK: - Function
     
     private func makeLabel(_ text: String) -> UILabel{
         let label = UILabel()
         label.text = text
-        label.textColor = .black
-        label.font = UIFont.ptdExtraBoldFont(ofSize: 20)
+        label.textColor = .gray800
+        label.font = UIFont.ptdExtraBoldFont(ofSize: 24)
         return label
     }
     
@@ -58,14 +50,14 @@ class GetMenuView: UIView {
     
     
     private func addComponents(){
-        [title1, title2, menuInputBox].forEach(self.addSubview)
+        [title1, title2, menuInputBox, menuGameStartBtn].forEach(self.addSubview)
          
     }
     
     private func constraints(){
         
         title1.snp.makeConstraints{
-            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(30)
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(33)
             $0.left.equalTo(30)
         }
         
@@ -76,8 +68,12 @@ class GetMenuView: UIView {
         
         menuInputBox.snp.makeConstraints {
             $0.top.equalTo(title2.snp.bottom).offset(20)
-            $0.horizontalEdges.equalToSuperview().inset(30)
-            $0.height.equalTo(50)
+            $0.horizontalEdges.equalToSuperview().inset(20)
+        }
+        
+        menuGameStartBtn.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-20)
         }
     
     }

@@ -22,7 +22,6 @@ class NicknameViewController: UIViewController {
     let nicknameTextField = PaddedTextField(
         padding: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16), placeholder: "닉네임")
     
-    let 
     // MARK: - LifeCycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

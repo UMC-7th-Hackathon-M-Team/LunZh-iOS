@@ -1,15 +1,15 @@
 //
-//  CustomDialogView.swift
+//  GroupCodeInputDialogView.swift
 //  LunZh
 //
-//  Created by 허준호 on 1/11/25.
+//  Created by 허준호 on 1/12/25.
 //
 
 import UIKit
 import Then
 import SnapKit
 
-class CustomDialogView: UIView {
+class GroupCodeInputDialogView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,12 +35,12 @@ class CustomDialogView: UIView {
     
     public lazy var cancelBtn = UIButton().then{
         $0.setImage(UIImage(systemName: "xmark"), for: .normal)
-        $0.tintColor = Constants.Colors.gray400
+        $0.tintColor = .gray400
     }
     
     // 제목
     private lazy var title = UILabel().then{
-        $0.text = "친구와 함께해요!"
+        $0.text = "그룹에 참여해보세요"
         $0.font = UIFont.ptdBoldFont(ofSize: 24)
         $0.textColor = .gray800
         $0.textAlignment = .center
@@ -48,24 +48,18 @@ class CustomDialogView: UIView {
     
     // 부제목
     private lazy var subTitle = UILabel().then{
-        $0.text = "친구에게 코드를 공유해보세요"
+        $0.text = "친구로부터 공유받은 코드를 입력하세요!"
         $0.font = UIFont.ptdMediumFont(ofSize: 16)
         $0.textColor = .gray500
         $0.textAlignment = .center
     }
     
     // 내용
-    private lazy var sharingCode = UILabel().then{
-        $0.text = "215789"
-        $0.font = .ptdBoldFont(ofSize: 24)
-        $0.textColor = Constants.Colors.yellow100
-        $0.textAlignment = .center
-    }
+    public lazy var codeInputBox = PaddedTextField(padding: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16), placeholder: "코드를 입력하세요")
+
     
     // 버튼
-    private lazy var confirmBtn = CustomButton().then {
-        $0.configure(title: "확인", titleColor: UIColor.white, isEnabled: true)
-    }
+    public var confirmBtn = CustomButton(title: "확인", titleColor: .gray500, isEnabled: false)
     // MARK: - Stack
     private lazy var dialogStack = makeStackView()
     
@@ -86,7 +80,7 @@ class CustomDialogView: UIView {
     
     private func addComponents(){
         //containerView.addSubview(dialogStack)
-        [cancelBtn, title, subTitle, sharingCode, confirmBtn].forEach(containerView.addSubview)
+        [cancelBtn, title, subTitle, codeInputBox, confirmBtn].forEach(containerView.addSubview)
         [containerView].forEach(self.addSubview)
     }
     
@@ -95,6 +89,7 @@ class CustomDialogView: UIView {
         cancelBtn.snp.makeConstraints {
             $0.top.equalToSuperview().offset(20)
             $0.right.equalToSuperview().inset(20)
+            $0.height.width.equalTo(16)
         }
         
         title.snp.makeConstraints{
@@ -107,14 +102,14 @@ class CustomDialogView: UIView {
             $0.horizontalEdges.equalToSuperview()
         }
         
-        sharingCode.snp.makeConstraints{
-            $0.top.equalTo(subTitle.snp.bottom).offset(45)
-            $0.horizontalEdges.equalToSuperview()
+        codeInputBox.snp.makeConstraints{
+            $0.top.equalTo(subTitle.snp.bottom).offset(40)
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
         confirmBtn.snp.makeConstraints{
-            $0.top.equalTo(sharingCode.snp.bottom).offset(57)
-            $0.horizontalEdges.bottom.equalToSuperview().inset(20)
+            $0.top.equalTo(codeInputBox.snp.bottom).offset(40)
+            $0.horizontalEdges.equalToSuperview().inset(20)
             
         }
         containerView.snp.makeConstraints{
@@ -123,5 +118,4 @@ class CustomDialogView: UIView {
             $0.width.equalTo(335)
         }
     }
-    
 }
