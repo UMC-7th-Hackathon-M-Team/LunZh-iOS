@@ -10,86 +10,74 @@ import SnapKit
 import Then
 
 class StoptwelveGameViewController: UIViewController {
-    
     // MARK: - Properties
-    private var gameModel = StoptwelveGameModel()
-    private var gameView: StoptwelveGameView!
-    private var tapGesture: UITapGestureRecognizer!
+    private let gameView = StoptwelveGameView()
+    private var startTime: Date?
+    private var isGameStarted = false
+    private let targetTime: Double = 12.12
     
     // MARK: - Lifecycle
     override func loadView() {
-        gameView = StoptwelveGameView(frame: UIScreen.main.bounds)
         view = gameView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupActions()
-        startCountdown()
+        setupGame()
     }
     
     // MARK: - Setup
-    private func setupActions() {
-        gameView.exitButton.addTarget(self,
-                                    action: #selector(exitButtonTapped),
-                                    for: .touchUpInside)
-        
-        tapGesture = UITapGestureRecognizer(target: self,
-                                           action: #selector(screenTapped))
+    private func setupGame() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(tapGesture)
+        
+        gameView.exitButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
+        
+        startCountdown()
     }
+    
+    
     
     // MARK: - Game Logic
     private func startCountdown() {
         var count = 3
-        gameView.countdownLabel.text = "\(count)"
-        gameView.countdownLabel.textColor = .red40 // 처음 색
-        gameView.countdownLabel.font = UIFont.ptdBoldFont(ofSize: 60)
-
+//        gameView.countdownLabel.text = ""  // 텍스트 대신 이미지를 사용할 것이므로 비움
+        gameView.countImageView.image = UIImage(named: "\(count)")  // "3" 이미지
+        
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
             count -= 1
             
-            // count 값에 따라 색상 변경
-            switch count {
-            case 2:
-                self?.gameView.countdownLabel.textColor = .red60  // 중간 빨간색 (2)
-            case 1:
-                self?.gameView.countdownLabel.textColor = .red100  // 진한 빨간색 (1)
-            case 0:
-                self?.gameView.countdownLabel.text = ""
+            if count > 0 {
+                self?.gameView.countImageView.image = UIImage(named: "\(count)")  // "2", "1" 이미지
+            } else {
                 timer.invalidate()
+                self?.gameView.countImageView.image = nil  // 이미지 제거
                 self?.startGame()
-                return
-            default:
-                break
             }
-            
-            self?.gameView.countdownLabel.text = count > 0 ? "\(count)" : ""
         }
     }
     
     private func startGame() {
-        gameModel.startGame()
+        gameView.showStartMessage()
+        isGameStarted = true
+        startTime = Date()
+    }
+    
+    @objc private func handleTap() {
+        guard isGameStarted else { return }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-            self?.gameView.showStartMessage()
+        if let startTime = startTime {
+            let currentTime = Date()
+            let elapsedTime = currentTime.timeIntervalSince(startTime)
+            
+            // 결과 표시 (차이 표시 제거)
+            gameView.showResult(elapsedTime: elapsedTime)
+            
+            isGameStarted = false
         }
     }
     
-    // MARK: - Actions
-    @objc private func screenTapped() {
-        guard gameModel.isGameStarted else { return }
-        
-        let result = gameModel.calculateResult(currentTime: Date())
-        gameView.showResult(
-            elapsedTime: result.elapsedTime,
-            difference: result.difference,
-            isEarly: result.elapsedTime < result.targetTime
-        )
-        gameModel.endGame()
-    }
-    
-    @objc private func exitButtonTapped() {
+    @objc private func dismissView() {
         dismiss(animated: true)
     }
 }
