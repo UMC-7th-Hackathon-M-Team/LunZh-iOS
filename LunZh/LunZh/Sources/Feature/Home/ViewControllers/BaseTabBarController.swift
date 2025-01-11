@@ -28,7 +28,7 @@ class BaseTabBarController: UITabBarController {
         // 기존 탭바 프레임을 가져와 높이를 조정
         var tabFrame = tabBar.frame
         tabFrame.size.height = 90 // 높이 증가
-        tabFrame.origin.y = view.frame.height - 100 // 위치 조정
+        tabFrame.origin.y = view.frame.height - 90 // 위치 조정
         tabBar.frame = tabFrame
     }
     
@@ -42,17 +42,17 @@ class BaseTabBarController: UITabBarController {
     
     // MARK: - 탭 연결 및 뷰컨트롤러 설정
     private func setupViewControllers() {
-        let firstVC = UIViewController()
+        let firstVC = CalendarViewController()
         firstVC.view.backgroundColor = .white
         let calendar = UIImage(systemName: "calendar")?.resize(by: 1.7)
         firstVC.tabBarItem = UITabBarItem(title: "", image: calendar, tag: 0)
         firstVC.tabBarItem.imageInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: -20)
         
-        let floatingVC = UIViewController()
+        let floatingVC = HomeViewController()
         floatingVC.view.backgroundColor = .white
         floatingVC.tabBarItem = UITabBarItem(title: "", image: UIImage(), tag: 1)
         
-        let secondVC = UIViewController()
+        let secondVC = ProfileViewController()
         secondVC.view.backgroundColor = .white
         let person = UIImage(systemName: "person.fill")?.resize(by: 1.7)
         secondVC.tabBarItem = UITabBarItem(title: "", image: person, tag: 2)
