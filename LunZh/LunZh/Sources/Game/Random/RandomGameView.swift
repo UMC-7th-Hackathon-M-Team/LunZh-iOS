@@ -14,10 +14,18 @@ class RandomGameView: UIView {
     let EllipseView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
     }
+    
+    let FoodLabelTitle = UILabel().then {
+        $0.textColor = UIColor.white
+        $0.textAlignment = .center
+        $0.text = "오늘의 점심은?"
+        $0.font = UIFont.ptdBoldFont(ofSize: 20)
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.yellow100
+        setupFoodLabelTitle()
         setupEllipseView()
         setupSlotMachine()
     }
@@ -25,8 +33,21 @@ class RandomGameView: UIView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         self.backgroundColor = UIColor.yellow100
+        setupFoodLabelTitle()
         setupEllipseView()
         setupSlotMachine()
+    }
+    
+    private func setupFoodLabelTitle() {
+        // FoodLabelTitle을 뷰에 추가
+        self.addSubview(FoodLabelTitle)
+        
+        FoodLabelTitle.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(220)
+            $0.centerX.equalToSuperview()
+            $0.height.equalTo(50)
+            $0.width.lessThanOrEqualToSuperview().offset(-40)
+        }
     }
     
     private func setupEllipseView() {

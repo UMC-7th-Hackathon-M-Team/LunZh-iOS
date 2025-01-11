@@ -15,7 +15,19 @@ class FakerGameViewController: UIViewController {
     private var timer: Timer?
     private var randomInterval: TimeInterval = 0
     private var isGameStarted = false
-    private var isColorChanged = false 
+    private var isColorChanged = false
+    
+    private var reactionTime: TimeInterval = 0
+
+    let gameService = GameService()
+    
+    var userId: Int? {
+        UserDefaults.standard.object(forKey: "userId") as? Int
+    }
+    
+    var teamId: Int? {
+        UserDefaults.standard.object(forKey: "teamId") as? Int
+    }
 
     
     // MARK: - Lifecycle
@@ -74,7 +86,7 @@ class FakerGameViewController: UIViewController {
         
         if let startTime = startTime {
             let currentTime = Date()
-            let reactionTime = currentTime.timeIntervalSince(startTime)
+            reactionTime = currentTime.timeIntervalSince(startTime)
             
             if isColorChanged {
                 // 배경색을 빨간색으로 변경
@@ -94,6 +106,20 @@ class FakerGameViewController: UIViewController {
     }
     
     @objc private func restartGame() {
+        // 내가 보낼 데이터를 DTO로 만듬
+        let myGameDTO = self.gameService.makeResultDTO(gameId: <#T##String#>, memberFood: <#T##String#>, result: Int(reactionTime))
+        
+        // 서버로 데이터 전송
+        self.gameService.gameResult(teamId: teamId, memberId: userId, data: myGameDTO) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let response):
+                print(response)
+            case .failure(let error):
+                print(error)
+            }
+        }
         self.dismiss(animated: true)
     }
 }

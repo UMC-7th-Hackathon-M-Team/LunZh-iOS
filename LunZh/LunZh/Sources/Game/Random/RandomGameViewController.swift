@@ -11,10 +11,20 @@ import UIKit
 import UIKit
 
 class RandomGameViewController: UIViewController {
-    var randomGameView: RandomGameView!
-    var timer: Timer?
-    let slotItems = ["피자", "떡볶이", "족발", "김밥", "국밥"]
-    let winnerFood: String = "김밥"
+    private var randomGameView: RandomGameView!
+    private var timer: Timer?
+    private let slotItems = ["피자", "떡볶이", "족발", "김밥", "국밥"]
+    private let winnerFood: String = "김밥"
+    
+    let gameService = GameService()
+    
+    var userId: Int? {
+        UserDefaults.standard.object(forKey: "userId") as? Int
+    }
+    
+    var teamId: Int? {
+        UserDefaults.standard.object(forKey: "teamId") as? Int
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,9 +37,23 @@ class RandomGameViewController: UIViewController {
 
     private func setupView() {
         randomGameView = RandomGameView(frame: self.view.bounds)
-        randomGameView.slotLabel.text = slotItems.randomElement()
         self.view.addSubview(randomGameView)
+        
+        // FoodLabelTitle 초기 상태: 숨김
+        randomGameView.FoodLabelTitle.isHidden = true
+
+        // 3초 후 결과 표시와 함께 나타나게 설정
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            self.randomGameView.FoodLabelTitle.text = "오늘의 점심은?"
+            self.randomGameView.FoodLabelTitle.isHidden = false
+            
+            // 애니메이션으로 나타나게 처리
+            UIView.animate(withDuration: 0.5) {
+                self.randomGameView.FoodLabelTitle.alpha = 1.0
+            }
+        }
     }
+
 
     private func startSlotMachineAnimation() {
         // 타이머를 사용해 일정 간격으로 텍스트 변경
@@ -61,6 +85,20 @@ class RandomGameViewController: UIViewController {
     }
 
     @objc private func handleScreenTap() {
+        // 내가 보낼 데이터를 DTO로 만듬
+        let myGameDTO = self.gameService.makeResultDTO(gameId: <#T##String#>, memberFood: <#T##String#>, result: 0)
+        
+        //서버로 데이터 전송
+        self.gameService.gameResult(teamId: teamId!, memberId: userId!, data: myGameDTO) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let response):
+                print(response)
+            case .failure(let error):
+                print(error)
+            }
+        }
         // 화면 터치 시 화면 닫기
         self.dismiss(animated: true, completion: nil)
     }

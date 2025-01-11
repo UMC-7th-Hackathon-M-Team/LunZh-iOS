@@ -146,7 +146,7 @@ class LoginViewController: UIViewController {
             switch result {
             case .success(let response):
                 print("카카오 로그인 성공")
-                saveUserId(userId: response.id)
+//                saveUserId(userId: response.id)
                 self.goToNextView(response.isFirstLogin)
             case .failure(let error):
                 print(error)

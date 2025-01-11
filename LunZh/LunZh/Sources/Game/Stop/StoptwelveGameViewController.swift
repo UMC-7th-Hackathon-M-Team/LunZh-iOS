@@ -17,6 +17,15 @@ class StoptwelveGameViewController: UIViewController {
     private let targetTime: Double = 12.12
     private var timeDifference: Double?
     
+    let gameService = GameService()
+    
+    var userId: Int? {
+        UserDefaults.standard.object(forKey: "userId") as? Int
+    }
+    
+    var teamId: Int? {
+        UserDefaults.standard.object(forKey: "teamId") as? Int
+    }
     // MARK: - Lifecycle
     override func loadView() {
         view = gameView
@@ -73,7 +82,8 @@ class StoptwelveGameViewController: UIViewController {
             let elapsedTime = currentTime.timeIntervalSince(startTime)
             
             // Calculate 12.12 - elapsedTime
-            timeDifference = targetTime - elapsedTime
+            timeDifference = (targetTime - elapsedTime)*1000
+            
             print(timeDifference as Any)
             
             gameView.EllipseView.isHidden = true
@@ -84,6 +94,20 @@ class StoptwelveGameViewController: UIViewController {
     }
     
     @objc private func dismissView() {
+        // 내가 보낼 데이터를 DTO로 만듬
+        let myGameDTO = self.gameService.makeResultDTO(gameId: <#T##String#>, memberFood: <#T##String#>, result: Int(timeDifference!))
+        
+        //서버로 데이터 전송
+        self.gameService.gameResult(teamId: teamId!, memberId: userId!, data: myGameDTO) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let response):
+                print(response)
+            case .failure(let error):
+                print(error)
+            }
+        }
         dismiss(animated: true)
     }
 }

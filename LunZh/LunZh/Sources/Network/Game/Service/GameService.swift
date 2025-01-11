@@ -26,6 +26,10 @@ public final class GameService: NetworkManager {
     }
     
     //MARK: - API funcs
+    //게임 결과 POST DTO Setting
+    public func makeResultDTO(gameId: String, memberFood: String, result: Int) -> GameRequestDTO {
+        return GameRequestDTO(gameId: gameId, memberFood: memberFood, result: result)
+    }
     
     /// 게임 참여 POST API
     public func gameStart(teamId: Int, memeberId: Int,  completion: @escaping (Result<GameResponsesDTO, NetworkError>) -> Void) {
@@ -37,13 +41,13 @@ public final class GameService: NetworkManager {
     }
     
     /// 게임 최종 결과 GET API
-    public func getTotalResult(teamId: Int, memberId: Int, completion: @escaping (Result<GameResultResponsesDTO, NetworkError>) -> Void) {
-        request(target: .gameResult(teamId: teamId, memeberId: memberId), decodingType: GameResultResponsesDTO.self, completion: completion)
+    public func getTotalResult(teamId: Int, completion: @escaping (Result<GameResultResponsesDTO, NetworkError>) -> Void) {
+        request(target: .getTotalResult(teamId: teamId), decodingType: GameResultResponsesDTO.self, completion: completion)
     }
     
     /// 게임 결과 POST API
-    public func gameResult(teamId: Int, memberId: Int,  completion: @escaping (Result<String, NetworkError>) -> Void) {
-        request(target: .gameResult(teamId: teamId, memeberId: memberId), decodingType: String.self, completion: completion)
+    public func gameResult(teamId: Int, memberId: Int, data: GameRequestDTO,  completion: @escaping (Result<String, NetworkError>) -> Void) {
+        request(target: .gameResult(teamId: teamId, memeberId: memberId, data: data), decodingType: String.self, completion: completion)
     }
     
 }
