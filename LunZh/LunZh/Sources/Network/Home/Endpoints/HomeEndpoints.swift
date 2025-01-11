@@ -18,9 +18,9 @@ extension HomeEndpoints: TargetType {
     public var path: String {
         switch self {
         case .getHomeInfo(let userId):
-            return "/home/{\(userId)}"
+            return "/home/\(userId)"
         case .getCalendarInfo(let userId):
-            return "/calendar/{\(userId)}"
+            return "/calendar/\(userId)"
         }
     }
     
@@ -34,7 +34,7 @@ extension HomeEndpoints: TargetType {
     public var task: Task {
         switch self {
         case .getHomeInfo(let data):
-            return .requestJSONEncodable(data)
+            return .requestPlain
         case .getCalendarInfo(let data):
             return .requestJSONEncodable(data)
         }

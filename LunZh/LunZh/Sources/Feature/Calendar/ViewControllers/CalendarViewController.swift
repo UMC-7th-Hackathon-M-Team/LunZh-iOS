@@ -8,8 +8,37 @@
 import UIKit
 
 class CalendarViewController: UIViewController, UICalendarViewDelegate, UICalendarSelectionSingleDateDelegate {
+    
+    let networkService = HomeService()
+    
+    private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterial))
+    
     var customCalendarView: CalendarView!
+    
+    var hasGroup: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: "hasGroup")
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "hasGroup")
+            
+            if newValue {
+                self.teamId = UserDefaults.standard.integer(forKey: "teamId")
+            } else {
+                self.teamId = nil
+            }
+        }
+    }
 
+    var teamId: Int? {
+        get {
+            return UserDefaults.standard.object(forKey: "teamId") as? Int
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "teamId")
+        }
+    }
+    
     let calendarDate: String = "2025-01-11"
     let calendarFood: String = "짜장면"
 
@@ -17,8 +46,18 @@ class CalendarViewController: UIViewController, UICalendarViewDelegate, UICalend
         super.viewDidLoad()
         self.view.backgroundColor = .white
         setupView()
+        hasGroup = false
+        if (!hasGroup) {
+            applyFullScreenBlur()
+        }
     }
-
+    
+    private func applyFullScreenBlur() {
+        blurEffectView.frame = view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(blurEffectView)
+    }
+    
     private func setupView() {
         customCalendarView = CalendarView(frame: self.view.bounds)
         self.view.addSubview(customCalendarView)
@@ -66,6 +105,22 @@ class CalendarViewController: UIViewController, UICalendarViewDelegate, UICalend
             return "🍣" // 일식
         default:
             return "❓" // 알 수 없는 음식
+        }
+    }
+    
+    // MARK: - API 연결
+    func fetchCalendarAPI(team: Int) {
+        networkService.getCalendarInfo(data: team) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let responseData) :
+                DispatchQueue.main.async {
+                    
+                }
+            case .failure(let error) :
+                print("\(error)")
+            }
         }
     }
 }

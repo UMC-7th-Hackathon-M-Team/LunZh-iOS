@@ -24,7 +24,13 @@ class HomeCustomButton: UIView {
         let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
         $0.image = UIImage(systemName: "chevron.forward", withConfiguration: config)
     }
-
+    
+    public func configure(title: String, subTitle: String, backgrounColor: UIColor) {
+        self.title.text = title
+        self.subTitle.text = subTitle
+        self.backgroundColor = backgrounColor
+    }
+    
     init(
         title: String,
         subTitle: String,
