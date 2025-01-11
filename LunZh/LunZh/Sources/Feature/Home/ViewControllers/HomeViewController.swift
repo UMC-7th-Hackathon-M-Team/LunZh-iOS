@@ -130,8 +130,8 @@ class HomeViewController: UIViewController {
     }
     
     // 데이터 및 타이머 변수
-    private var textList = Constants.TasteList
-    private let imageNames = ["banner", "banner", "banner"]
+    private var textList: [String] = FoodDNAModel.selectDummyData.map { $0.name }
+    private let imageNames: [String] = FoodDNAModel.selectDummyData.map { $0.imageName }
     private var currentIndex = 0
     private var timer: Timer?
 
