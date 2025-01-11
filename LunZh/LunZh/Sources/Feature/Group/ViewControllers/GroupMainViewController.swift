@@ -8,22 +8,25 @@
 import UIKit
 
 class GroupMainViewController: UIViewController {
-
+    private lazy var groupMainView: GroupMainView = {
+        let groupMainView = GroupMainView()
+        groupMainView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return groupMainView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        self.view = groupMainView
+        view.backgroundColor = .white
+        
+        groupMainView.groupMainAppBar.sharingBtn.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @objc func buttonTapped() {
+        print("sharingBtn tapped")
+        debugPrint("Button is tapped")
     }
-    */
 
 }
