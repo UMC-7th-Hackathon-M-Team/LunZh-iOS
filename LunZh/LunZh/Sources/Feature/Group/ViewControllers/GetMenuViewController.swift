@@ -8,10 +8,13 @@
 import UIKit
 
 class GetMenuViewController: UIViewController {
-
+   
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.view = getMenuView
+        view.backgroundColor = .white
     }
+    
+    private lazy var getMenuView = GetMenuView()
     
 }

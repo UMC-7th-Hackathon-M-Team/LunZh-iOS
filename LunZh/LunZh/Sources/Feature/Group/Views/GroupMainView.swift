@@ -30,7 +30,7 @@ class GroupMainView: UIView {
      public lazy var groupMainAppBar = GroupMainAppBar()
     
      // 그룹 메인화면 - 중앙 바디영역
-     private lazy var groupMainBody = GroupMainBody()
+     public lazy var groupMainBody = GroupMainBody()
     
     // MARK: - Function
     
@@ -47,6 +47,7 @@ class GroupMainView: UIView {
         groupMainAppBar.snp.makeConstraints {
             $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
             $0.horizontalEdges.equalTo(self)
+            $0.height.equalTo(60)
         }
         
         groupMainBody.snp.makeConstraints {

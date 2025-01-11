@@ -23,8 +23,14 @@ class GroupMainBody: UIView {
     
     // MARK: - Property
     
+    // 그룹명
+    private lazy var groupNameLabel = UILabel().then{
+        $0.text = "그룹: 그레이스"
+        $0.textColor = .black
+        $0.font = UIFont.ptdBoldFont(ofSize: 18)
+    }
     // 게임시작 버튼
-    private lazy var gameStartBtn = makeButton("게임시작")
+    public lazy var gameStartBtn = makeButton("게임시작")
     
     // MARK: - Stack
     
@@ -60,10 +66,16 @@ class GroupMainBody: UIView {
 //    }
     
     private func addComponents(){
-        [gameStartBtn].forEach(self.addSubview)
+        [groupNameLabel, gameStartBtn].forEach(self.addSubview)
     }
     
     private func constraints(){
+        
+        
+        groupNameLabel.snp.makeConstraints{
+            $0.top.equalToSuperview().offset(20)
+            $0.centerX.equalToSuperview()
+        }
         
         gameStartBtn.snp.makeConstraints{
             $0.center.equalToSuperview()
