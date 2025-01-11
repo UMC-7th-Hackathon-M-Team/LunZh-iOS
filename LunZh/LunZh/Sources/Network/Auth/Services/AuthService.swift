@@ -21,14 +21,18 @@ public final class AuthService : NetworkManager {
     // MARK: - DTO funcs
     
     /// 로그인 데이터 구조 생성
-    public func makeLoginDTO(username: String, email: String) -> LoginDTO {
-        return LoginDTO(username: username, email: email)
+    public func makeLoginDTO(/*username: String, */email: String) -> LoginDTO {
+        return LoginDTO(/*username: username,*/ email: email)
     }
     
     //MARK: - API funcs
     /// 자체 로그인 API
-    public func login(data: LoginDTO, completion: @escaping (Result<LoginResponseDTO, NetworkError>) -> Void) {
-        request(target: .postLogin(data: data), decodingType: LoginResponseDTO.self, completion: completion)
+    public func login(email: String, completion: @escaping (Result<LoginResponseDTO, NetworkError>) -> Void) {
+        request(
+            target: .postLogin(email: email),  // email 전달
+            decodingType: LoginResponseDTO.self,
+            completion: completion
+        )
     }
     
     /// 로그아웃 API

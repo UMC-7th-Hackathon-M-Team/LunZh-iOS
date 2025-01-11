@@ -8,7 +8,7 @@
 import Foundation
 
 public struct GameRequestDTO : Codable {
-    public let gameId : Int
-    public let memberFood : Int
+    public let gameId : String
+    public let memberFood : String
     public let result : Int
 }

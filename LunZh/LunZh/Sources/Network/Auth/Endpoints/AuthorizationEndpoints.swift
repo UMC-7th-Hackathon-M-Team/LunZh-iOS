@@ -3,7 +3,7 @@ import Foundation
 import Moya
 
 public enum AuthorizationEndpoints {
-    case postLogin(data : LoginDTO)
+    case postLogin(email: String)
     case postLogout
     case postDelete
 }
@@ -18,8 +18,8 @@ extension AuthorizationEndpoints: TargetType {
     
     public var path: String {
         switch self {
-        case .postLogin:
-            return "/login"
+        case .postLogin(let email):
+            return "/members/login"
         case .postDelete:
             return "/login"
         case .postLogout:
@@ -36,8 +36,11 @@ extension AuthorizationEndpoints: TargetType {
     
     public var task: Task {
         switch self {
-        case .postLogin(let data):
-            return .requestJSONEncodable(data)
+        case .postLogin(let email):
+            return .requestParameters(
+                parameters: ["email": email],  // 쿼리 파라미터
+                encoding: URLEncoding.queryString
+            )
         case .postLogout, .postDelete:
             return .requestPlain
         }

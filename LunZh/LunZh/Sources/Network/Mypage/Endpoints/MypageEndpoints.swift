@@ -24,7 +24,7 @@
 //        case .patchNickname:
 //            return "/login"
 //        case .patchTaste:
-//            return "/logout"
+//            return "/members"
 //        }
 //    }
 //    
@@ -40,9 +40,14 @@
 //    public var task: Task {
 //        switch self {
 //        case .getUserInfo:
-//            return .requestJSONEncodable
-//        case .patchNickname, .patchTaste:
 //            return .requestPlain
+//        case .patchNickname:
+//            return .requestPlain
+//        case .patchTaste:
+//            return .requestParameters(
+//                parameters: ["email": email],  // 쿼리 파라미터
+//                encoding: URLEncoding.queryString
+//            )
 //        }
 //    }
 //    

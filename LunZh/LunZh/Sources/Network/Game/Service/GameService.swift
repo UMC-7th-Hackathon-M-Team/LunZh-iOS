@@ -27,15 +27,24 @@ public final class GameService: NetworkManager {
     
     //MARK: - API funcs
     
-    /// 게임 참여 API
-    public func gameStart(completion: @escaping (Result<[WinePreviewResponse]?, NetworkError>) -> Void) {
-//        request(target: .getWishList, decodingType: [WinePreviewResponse].self, completion: completion)
-        requestOptional(target: .getWishList, decodingType: [WinePreviewResponse].self, completion: completion)
+    /// 게임 참여 POST API
+    public func gameStart(teamId: Int, memeberId: Int,  completion: @escaping (Result<GameResponsesDTO, NetworkError>) -> Void) {
+        request(
+            target: .gameStart(teamId: teamId, memeberId: memeberId),
+            decodingType: GameResponsesDTO.self,
+            completion: completion
+        )
     }
     
-    /// 게임 결과 API
-    public func gameResult(teamId: Int, memberId: Int, data: GameRequestDTO completion: @escaping (Result<String, NetworkError>) -> Void) {
+    /// 게임 최종 결과 GET API
+    public func getTotalResult(teamId: Int, memberId: Int, completion: @escaping (Result<GameResultResponsesDTO, NetworkError>) -> Void) {
+        request(target: .gameResult(teamId: teamId, memeberId: memberId), decodingType: GameResultResponsesDTO.self, completion: completion)
+    }
+    
+    /// 게임 결과 POST API
+    public func gameResult(teamId: Int, memberId: Int,  completion: @escaping (Result<String, NetworkError>) -> Void) {
         request(target: .gameResult(teamId: teamId, memeberId: memberId), decodingType: String.self, completion: completion)
     }
+    
 }
 

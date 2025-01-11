@@ -5,6 +5,6 @@ public struct API {
     public static let homeURL = "\(baseURL)/home"
     public static let calendarURL = "\(baseURL)/calendar"
     public static let gameURL = "\(baseURL)/game"
-    public static let groupURL = "\(baseURL)/group"
+    public static let groupURL = "\(baseURL)/groups"
     public static let profileURL = "\(baseURL)/mypage"
 }
