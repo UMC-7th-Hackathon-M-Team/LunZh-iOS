@@ -11,6 +11,11 @@ import Then
 
 class StoptwelveGameView: UIView {
     // MARK: - Properties
+    
+    let EllipseView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+    }
+    
     let countImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
     }
@@ -35,7 +40,7 @@ class StoptwelveGameView: UIView {
         )
         
         $0.attributedText = attributedString
-        $0.font = .systemFont(ofSize: 24, weight: .bold)
+        $0.font = UIFont.ptdBoldFont(ofSize: 24)
         $0.textAlignment = .left
         $0.numberOfLines = 0
         $0.isHidden = true
@@ -44,7 +49,7 @@ class StoptwelveGameView: UIView {
     
     let timerInstructionLabel = UILabel().then {
         $0.textColor = .white
-        $0.font = .systemFont(ofSize: 16, weight: .regular)
+        $0.font = UIFont.ptdMediumFont(ofSize: 16)
         $0.textAlignment = .left
         $0.text = "보이지 않는 12초를 예상하고\n화면을 터치해 주세요!"
         $0.numberOfLines = 0
@@ -53,14 +58,14 @@ class StoptwelveGameView: UIView {
     
     let resultTimeLabel = UILabel().then {
         $0.textColor = .white
-        $0.font = .systemFont(ofSize: 60, weight: .bold)
+        $0.font = UIFont.ptdBoldFont(ofSize: 60)
         $0.textAlignment = .center
         $0.isHidden = true
     }
     
     let differenceLabel = UILabel().then {
         $0.textColor = .white
-        $0.font = .systemFont(ofSize: 25, weight: .medium)
+        $0.font = UIFont.ptdMediumFont(ofSize: 25)
         $0.textAlignment = .center
         $0.isHidden = true
     }
@@ -69,7 +74,7 @@ class StoptwelveGameView: UIView {
         $0.setTitle("결과 제출하기", for: .normal)
         $0.backgroundColor = .yellow60
         $0.setTitleColor(.black, for: .normal)
-        $0.titleLabel?.font = .systemFont(ofSize: 18, weight: .bold)
+        $0.titleLabel?.font = UIFont.ptdBoldFont(ofSize: 18)
         $0.layer.cornerRadius = 90
         $0.isHidden = true
     }
@@ -88,6 +93,10 @@ class StoptwelveGameView: UIView {
     private func setupUI() {
         backgroundColor = .gray700
         
+        EllipseView.image = UIImage(named: "Ellipse")
+        EllipseView.isHidden = true
+        
+        addSubview(EllipseView)
         addSubview(countImageView)
         addSubview(countingStatusLabel)
         addSubview(timerInstructionLabel)
@@ -99,6 +108,12 @@ class StoptwelveGameView: UIView {
     }
     
     private func setupConstraints() {
+        
+        EllipseView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.width.height.equalTo(400)
+        }
+        
         countImageView.snp.makeConstraints {
 //            $0.top.equalToSuperview().offset(61)
             $0.center.equalToSuperview()

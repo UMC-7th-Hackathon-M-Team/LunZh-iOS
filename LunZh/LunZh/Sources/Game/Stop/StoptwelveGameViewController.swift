@@ -15,6 +15,7 @@ class StoptwelveGameViewController: UIViewController {
     private var startTime: Date?
     private var isGameStarted = false
     private let targetTime: Double = 12.12
+    private var timeDifference: Double?
     
     // MARK: - Lifecycle
     override func loadView() {
@@ -58,6 +59,7 @@ class StoptwelveGameViewController: UIViewController {
     }
     
     private func startGame() {
+        gameView.EllipseView.isHidden = false
         gameView.showStartMessage()
         isGameStarted = true
         startTime = Date()
@@ -70,7 +72,11 @@ class StoptwelveGameViewController: UIViewController {
             let currentTime = Date()
             let elapsedTime = currentTime.timeIntervalSince(startTime)
             
-            // 결과 표시 (차이 표시 제거)
+            // Calculate 12.12 - elapsedTime
+            timeDifference = targetTime - elapsedTime
+            print(timeDifference as Any)
+            
+            gameView.EllipseView.isHidden = true
             gameView.showResult(elapsedTime: elapsedTime)
             
             isGameStarted = false

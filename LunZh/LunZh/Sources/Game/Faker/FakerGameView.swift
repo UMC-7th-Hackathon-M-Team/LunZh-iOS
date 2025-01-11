@@ -17,7 +17,7 @@ class FakerGameView: UIView {
     
     let resultLabel = UILabel().then {
        $0.textColor = .white
-       $0.font = .systemFont(ofSize: 50, weight: .bold) // 폰트 크기 수정
+       $0.font = UIFont.ptdBoldFont(ofSize: 50)
        $0.textAlignment = .center
    }
    
