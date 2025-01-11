@@ -15,6 +15,8 @@ class LoginViewController: UIViewController {
     
     lazy var kakaoAuthVM: KakaoAuthVM = KakaoAuthVM()
     
+    let networkService = AuthService()
+    
     let logoImageView = UIImageView().then {
         $0.image = UIImage(named: "logo") // 이미지 이름으로 초기화
         $0.contentMode = .scaleAspectFill // 이미지 비율 유지
@@ -107,65 +109,63 @@ class LoginViewController: UIViewController {
     
     // MARK: - Actions
     @objc private func kakaoButtonTapped() {
-//        self.kakaoAuthVM.kakaoLogin { success in
-//            if success {
-//                UserApi.shared.me { (user, error) in
-//                    if let error = error {
-//                        print("에러 발생: \(error.localizedDescription)")
-//                        return
-//                    }
-//                    
-//                    guard let userID = user?.id else {
-//                        print("user id가 nil입니다.")
-//                        return
-//                    }
-//                    guard let userEmail = user?.kakaoAccount?.email else {
-//                        print("userEmail가 nil입니다.")
-//                        return
-//                    }
-//                    guard let userProfile = user?.kakaoAccount?.profile?.profileImageUrl else {
-//                        print("userProfile이 nil입니다.")
-//                        return
-//                    }
-//                    UserDefaults.standard.set(userProfile, forKey: "userProfile")
-//                }
-//            } else {
-//                print("카카오 회원가입 실패")
-//            }
-//        }
-        print("kakaoTapped")
-        let vc = NicknameViewController()
-        navigationController?.pushViewController(vc, animated: true)
+        self.kakaoAuthVM.kakaoLogin { success in
+            if success {
+                UserApi.shared.me { (user, error) in
+                    if let error = error {
+                        print("에러 발생: \(error.localizedDescription)")
+                        return
+                    }
+                    
+                    guard let userIDString = user?.id else {
+                        print("user id가 nil입니다.")
+                        return
+                    }
+                    guard let userEmail = user?.kakaoAccount?.email else {
+                        print("userEmail가 nil입니다.")
+                        return
+                    }
+                    guard let userProfile = user?.kakaoAccount?.profile?.profileImageUrl else {
+                        print("userProfile이 nil입니다.")
+                        return
+                    }
+                    self.kakaoLoginProceed(userEmail: userEmail)
+                    UserDefaults.standard.set(userProfile, forKey: "userProfile")
+                }
+            } else {
+                print("카카오 회원가입 실패")
+            }
+        }
     }
     
     
-    private func kakaoLoginProceed(_ userIDString: String, userEmail: String) {
-//        let kakaoDTO = self.networkService.makeKakaoDTO(username: userIDString, email: userEmail)
-//        self.networkService.kakaoLogin(data: kakaoDTO) { [weak self] result in
-//            guard let self = self else { return }
-//            
-//            switch result {
-//            case .success(let response):
-//                print("카카오 로그인 성공")
-//                saveUserId(userId: response.id)
+    private func kakaoLoginProceed(userEmail: String) {
+        self.networkService.login(email: userEmail) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let response):
+                print("카카오 로그인 성공")
+                saveUserId(userId: response.id)
 //                Task {
 //                    // userID저장
 //                    await UserDataManager.shared.createUser(userId: response.id)
 //                }
-//                self.goToNextView(response.isFirst)
-//            case .failure(let error):
-//                print(error)
-//            }
-//        }
+                self.goToNextView(response.isFirstLogin)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
+    
     func goToNextView(_ isFirstLogin: Bool) {
-//        if isFirstLogin {
-//            let enterTasteTestViewController = SplashVC()
-//            navigationController?.pushViewController(enterTasteTestViewController, animated: true)
-//        } else {
-//            let homeViewController = MainTabBarController()
-//            navigationController?.pushViewController(homeViewController, animated: true)
-//        }
+        if isFirstLogin {
+            let enterNicknameTestViewController = NicknameViewController()
+            navigationController?.pushViewController(enterNicknameTestViewController, animated: true)
+        } else {
+            let homeViewController = BaseTabBarController()
+            navigationController?.pushViewController(homeViewController, animated: true)
+        }
     }
     
     func saveUserId(userId : Int) {

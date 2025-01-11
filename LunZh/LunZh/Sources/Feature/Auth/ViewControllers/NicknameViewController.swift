@@ -15,12 +15,15 @@ class NicknameViewController: UIViewController {
     let navigationBarManager = NavigationBarManager()
     
     let descriptionLabel = UILabel().then {
-        $0.text = "닉네임을 입력해 주세요."
+        $0.text = "닉네임을\n입력해 주세요!"
         $0.font = UIFont.ptdBoldFont(ofSize: 24)
+        $0.numberOfLines = 0
     }
     
     let nicknameTextField = PaddedTextField(
         padding: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16), placeholder: "닉네임")
+    
+    let nextButton = CustomButton(title: "다음", titleColor: .gray500, isEnabled: false)
     
     // MARK: - LifeCycle
     override func viewWillAppear(_ animated: Bool) {
@@ -38,6 +41,7 @@ class NicknameViewController: UIViewController {
         view.backgroundColor = Constants.Colors.white
         setupUI()
         setupConstraints()
+        setupActions()
         setupNavigationBar()
     }
     
@@ -45,7 +49,7 @@ class NicknameViewController: UIViewController {
     // MARK: - setup
     
     func setupUI() {
-        [descriptionLabel, nicknameTextField].forEach{
+        [descriptionLabel, nicknameTextField, nextButton].forEach{
             view.addSubview($0)
         }
     }
@@ -59,6 +63,15 @@ class NicknameViewController: UIViewController {
             make.top.equalTo(descriptionLabel.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(20)
         }
+        nextButton.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
+            make.leading.trailing.equalToSuperview().inset(20)
+        }
+    }
+    
+    func setupActions(){
+        nicknameTextField.addTarget(self, action: #selector(nicknameValidate), for: .editingChanged)
+        nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
     }
     
      private func setupNavigationBar() {
@@ -74,5 +87,21 @@ class NicknameViewController: UIViewController {
     // MARK: - func
     @objc private func backButtonTapped() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func nextButtonTapped() {
+        let vc = MyTasteViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func nicknameValidate() {
+        var isValid: Bool = false
+        if let nickname = nicknameTextField.text, !nickname.isEmpty {
+            isValid = true
+        } else {
+            isValid = false
+        }
+        nextButton.isEnabled = isValid
+        nextButton.isEnabled(isEnabled: isValid)
     }
 }
