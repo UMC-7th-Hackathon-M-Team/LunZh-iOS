@@ -17,7 +17,7 @@ class HomeViewController: UIViewController {
         UserDefaults.standard.object(forKey: "userId") as? Int
     }
     
-    var memberName: String = "철수" {
+    var memberName: String = "런지" {
         didSet {
             label1.text = "\(memberName) 님, 오늘"
         }
@@ -143,6 +143,7 @@ class HomeViewController: UIViewController {
         configureCollectionView()
         setupTimers()
         setupGestures()
+        fetchHomeAPI(user: userId!)
     }
     
     private func setupViews() {
@@ -240,14 +241,14 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: - API 연결
-    func fetchHomeAPI(query: String) {
-        networkService.getHomeInfo(data: userId!) { [weak self] result in
+    func fetchHomeAPI(user: Int) {
+        networkService.getHomeInfo(data: user) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case .success(let responseData) :
                 DispatchQueue.main.async {
-                    self.memberName = responseData.memberName ?? "철수"
+                    self.memberName = responseData.memberName ?? "런지"
                     self.teamName = responseData.groupName ?? ""
                     self.hasGroup = responseData.hasGroup
                 }

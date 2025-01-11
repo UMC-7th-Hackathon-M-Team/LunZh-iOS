@@ -109,18 +109,18 @@ class CalendarViewController: UIViewController, UICalendarViewDelegate, UICalend
     }
     
     // MARK: - API 연결
-//    func fetchCalendarAPI(team: teamId) {
-//        networkService.getCalendarInfo(data: team) { [weak self] result in
-//            guard let self = self else { return }
-//            
-//            switch result {
-//            case .success(let responseData) :
-//                DispatchQueue.main.async {
-//                    
-//                }
-//            case .failure(let error) :
-//                print("\(error)")
-//            }
-//        }
-//    }
+    func fetchCalendarAPI(team: Int) {
+        networkService.getCalendarInfo(data: team) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let responseData) :
+                DispatchQueue.main.async {
+                    
+                }
+            case .failure(let error) :
+                print("\(error)")
+            }
+        }
+    }
 }
