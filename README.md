@@ -193,25 +193,25 @@ Related to: #8
 <!-- 특별히 봐야할 부분이나 주의할 점을 적어주세요 -->
 
 ## 📲 issue Convention
-**1. 작업 개요 (Summary)**
-- 이슈와 관련된 작업을 간단히 설명해주세요.
-> 예:  
-> ~ 기능 UI 구현
+---
+name: 이슈템플릿
+about: 커스텀 템플릿입니다. 이거쓰세용
+title: ''
+labels: ''
+assignees: ''
 
-**2. 브랜치 명칭 (Branch Name)**
-> **형식**: `feature/{작업-설명}` 또는 `fix/{버그-설명}`  
+---
 
-**3. 예상 완료일 (Due Date)**
-- YYYY/MM/DD
+## 🔨 어떤 기능인가요?
+>  기능에 대해 간결하게 설명해주세요
 
-**4. 참고 자료 (References)**
-* 
-* 
+## ✅ 작업 상세 내용
+- [ ] TODO
+- [ ] TODO
+- [ ] TODO
 
-5. 체크리스트 (Checklist)
-- [ ] 
-- [ ] 
-- [ ]
+## 🌐 참고할만한 자료(선택)
+
 
 ## 🖊️ Git Flow
 
