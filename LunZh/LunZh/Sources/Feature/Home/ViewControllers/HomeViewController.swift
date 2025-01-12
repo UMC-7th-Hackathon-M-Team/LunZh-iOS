@@ -98,10 +98,6 @@ class HomeViewController: UIViewController {
         $0.isHidden = hasGroup ?? true
     }
     
-    var hasGroup: Bool? {
-        UserDefaults.standard.object(forKey: "hasGroup") as? Bool
-    }
-    
     func setupGestures() {
         let btnTapGesture1 = UITapGestureRecognizer(target: self, action: #selector(makeGroupBtnTapped))
         notJoinGroupView.makeGroupBtn.addGestureRecognizer(btnTapGesture1)

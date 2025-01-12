@@ -81,11 +81,23 @@ class CalendarViewController: UIViewController, UICalendarViewDelegate {
         customCalendarView.calendarView.reloadDecorations(forDateComponents: [], animated: true)
     }
 
-    // 특정 날짜에 음식 이모지 표시
+    // 특정 날짜에 음식 이모지 표시 (1월 12일 하드코딩 추가)
     func calendarView(_ calendarView: UICalendarView, decorationFor dateComponents: DateComponents) -> UICalendarView.Decoration? {
         guard let year = dateComponents.year, let month = dateComponents.month, let day = dateComponents.day else { return nil }
+        
         let dateString = String(format: "%04d-%02d-%02d", year, month, day)
 
+        if year == 2025 && month == 1 && day == 12 {
+            return .customView {
+                let label = UILabel()
+                label.text = "🍔"
+                label.font = UIFont.systemFont(ofSize: 16)
+                label.textAlignment = .center
+                return label
+            }
+        }
+
+        // 기존 음식 데이터가 있는 경우
         if let foodName = foodDataByDate[dateString] {
             let emoji = getEmoji(for: foodName)
             return .customView {
