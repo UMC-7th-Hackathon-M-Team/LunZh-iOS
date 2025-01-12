@@ -9,7 +9,7 @@
     <th><a href="https://github.com/helljh" style="color: black;">@지누</a></th>
   </tr>
   <tr>
-    <td>iOS</td>
+    <td>iOS</td>
     <td>iOS</td>
     <td>iOS</td>
     <td>iOS</td>
