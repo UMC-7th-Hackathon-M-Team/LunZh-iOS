@@ -97,7 +97,6 @@ class HomeViewController: UIViewController {
                                                     backgroundColor: UIColor.yellow60).then {
         $0.isHidden = hasGroup ?? true
     }
-
     
     func setupGestures() {
         let btnTapGesture1 = UITapGestureRecognizer(target: self, action: #selector(makeGroupBtnTapped))
