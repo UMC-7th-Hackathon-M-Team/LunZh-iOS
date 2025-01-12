@@ -52,7 +52,7 @@ class BaseTabBarController: UITabBarController {
         floatingVC.view.backgroundColor = .white
         floatingVC.tabBarItem = UITabBarItem(title: "", image: UIImage(), tag: 1)
         
-        let secondVC = ProfileViewController()
+        let secondVC = RankingTableViewController()
         secondVC.view.backgroundColor = .white
         let person = UIImage(systemName: "person.fill")?.resize(by: 1.7)
         secondVC.tabBarItem = UITabBarItem(title: "", image: person, tag: 2)
