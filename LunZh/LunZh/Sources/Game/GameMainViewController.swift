@@ -78,9 +78,9 @@ class GameMainViewController: UIViewController {
 //        kindOfGame = (kindOfGame == 2) ? 3 : 2
         
         // 게임 화면으로 이동
-        var gameVC1 = GameResultWaitingViewController()
+        var gameVC1 = FakerGameViewController()
         var gameVC2 = FakerGameViewController()
-        var gameVC3 = StoptwelveGameViewController()
+        var gameVC3 = FakerGameViewController()
     
 
         if gameNumber == 1 {

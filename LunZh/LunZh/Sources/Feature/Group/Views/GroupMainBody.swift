@@ -32,7 +32,7 @@ class GroupMainBody: UIView {
     
     private lazy var title1: UILabel = {
         let label = UILabel()
-        let fullText = "그레이스에"
+        let fullText = "유엠씨에"
         let attributedString = NSMutableAttributedString(string: fullText)
         
         // 마지막 글자의 범위를 계산합니다.

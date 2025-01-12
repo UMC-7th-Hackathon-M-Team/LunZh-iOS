@@ -138,6 +138,9 @@ class FakerGameViewController: UIViewController {
                 print(error)
             }
         }
-        self.dismiss(animated: true)
+        let gameVc = GameResultWaitingViewController()
+        
+        gameVc.modalPresentationStyle = .fullScreen
+        present(gameVc, animated: true)
     }
 }

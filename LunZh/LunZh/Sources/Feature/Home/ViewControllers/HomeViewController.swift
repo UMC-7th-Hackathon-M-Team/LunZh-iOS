@@ -13,8 +13,8 @@ class HomeViewController: UIViewController {
     
     let networkService = HomeService()
     
-    var userId: Int? {
-        UserDefaults.standard.object(forKey: "userId") as? Int
+    var userId: Int {
+        UserDefaults.standard.object(forKey: "userId") as? Int ?? 0
     }
     
     var memberName: String = "런지" {
@@ -143,7 +143,7 @@ class HomeViewController: UIViewController {
         configureCollectionView()
         setupTimers()
         setupGestures()
-        fetchHomeAPI(user: userId!)
+        fetchHomeAPI(user: userId)
     }
     
     private func setupViews() {
