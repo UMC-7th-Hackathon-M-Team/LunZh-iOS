@@ -4,7 +4,7 @@
 <table>
   <tr>
     <th><a href="https://github.com/hrepay" style="color: black;">@에그</a></th>
-    <th><a href="https://github.com/yeseonglee" style="color: black;">@예스</a></th>
+    <th><a href="https://github.com/yeseonglee" style="color: black;">@예스</a></th>
     <th><a href="https://github.com/dlguszoo" style="color: black;">@주디</a></th>
     <th><a href="https://github.com/helljh" style="color: black;">@지누</a></th>
   </tr>
