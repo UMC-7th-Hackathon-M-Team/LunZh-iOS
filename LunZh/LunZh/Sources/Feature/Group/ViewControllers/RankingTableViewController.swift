@@ -11,18 +11,45 @@ import SnapKit
 
 class RankingTableViewController: UIViewController {
     private let data = dummyRankingModel.rankingItems
+    let navigationBarManager = NavigationBarManager()
     
     private lazy var gameResultView = GameResultView().then{
         $0.rankingTableView.dataSource = self
         $0.rankingTableView.delegate = self
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = gameResultView
         view.backgroundColor = .white
+        
+        setupNavigationBar()
+    }
+    
+    private func setupNavigationBar() {
+        navigationBarManager.setLogoTitle(to: navigationItem, logo: true)
+        navigationBarManager.addBackButton(
+            to: navigationItem,
+            target: self,
+            action: #selector(backButtonTapped),
+            tintColor: Constants.Colors.gray400!
+        )
     }
 
+    @objc private func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
+    }
 }
 
 extension RankingTableViewController: UITableViewDataSource, UITableViewDelegate {

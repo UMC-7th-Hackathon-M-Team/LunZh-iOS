@@ -35,7 +35,7 @@ class GameResultView: UIView {
     
     private lazy var title2: UILabel = {
         let label = UILabel()
-        let fullText = "짜장면 입니다!"
+        let fullText = "파스타 입니다!"
         let attributedString = NSMutableAttributedString(string: fullText)
         let components = fullText.components(separatedBy: " ")
         
